@@ -1,0 +1,1220 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi Expansión</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: mobile-first app. Público = banda negra de impacto + contenido crema. Privado = barra lateral negra + lienzo crema. Una sola identidad (marca Tiby), sin modo oscuro. */
+:root{
+  --ink:#020202; --cream:#FBF8F4; --lime:#C1FF72; --orange:#FF751F;
+  --card:#FFFDFA; --soft:#F2EDE6; --soft2:#E9E2D8;
+  --line:rgba(2,2,2,.10); --line2:rgba(2,2,2,.20);
+  --muted:#635C54; --on-dark-muted:rgba(251,248,244,.66); --dark-line:rgba(251,248,244,.16); --dark-card:#141412;
+  --orange-soft:#FFE8DA; --orange-ink:#A3400A; --lime-soft:#EDFFD6; --lime-ink:#2E5000;
+  --amber-soft:#FFF2C6; --amber-ink:#6A4B00; --peach:#FFD2B5;
+  --f-display:'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-body:'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --r:16px; --r-sm:10px;
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{margin:0}
+html,body{background:var(--cream);color:var(--ink)}
+body{font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(28px,6vw,46px);font-weight:600}
+h2{font-size:clamp(22px,3.6vw,30px);font-weight:600}
+h3{font-size:18px;font-weight:600}
+h4{font-size:15px;font-weight:600}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:680px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.stack-s{display:flex;flex-direction:column;gap:8px}
+.stack-l{display:flex;flex-direction:column;gap:28px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:640px){.grid4{grid-template-columns:repeat(2,1fr)}}
+.grid2>*,.grid3>*,.grid4>*{min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.tiny{font-size:12px}
+.eyebrow{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.num{font-variant-numeric:tabular-nums}
+.hide{display:none!important}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid transparent;border-radius:12px;padding:12px 18px;font-family:var(--f-display);font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;transition:transform .12s ease,background .15s ease;min-height:46px;background:transparent}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn-lime{background:var(--lime);color:var(--ink)}
+.btn-lime:hover:not([disabled]){background:#B2F55E}
+.btn-dark{background:var(--ink);color:var(--cream)}
+.btn-dark:hover:not([disabled]){background:#2A2A27}
+.btn-line{border-color:var(--line2);color:var(--ink);background:var(--card)}
+.btn-line:hover:not([disabled]){border-color:var(--ink)}
+.btn-line-light{border-color:rgba(251,248,244,.7);color:var(--cream)}
+.btn-line-light:hover{background:rgba(251,248,244,.08)}
+.btn-orange{background:var(--orange);color:var(--ink)}
+.btn-sm{padding:7px 12px;min-height:34px;font-size:13px;border-radius:9px}
+.btn-block{width:100%}
+.link{background:none;border:0;padding:0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-weight:500}
+.icon{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Cards / pills */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.card-soft{background:var(--soft);border-radius:var(--r);padding:18px}
+.card-dark{background:var(--ink);color:var(--cream);border-radius:var(--r);padding:20px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;font-family:var(--f-display);white-space:nowrap;line-height:1.6}
+.st-sin{background:var(--soft2);color:#4A443D}
+.st-bor{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line2)}
+.st-rev{background:var(--amber-soft);color:var(--amber-ink)}
+.st-aju{background:var(--orange-soft);color:var(--orange-ink)}
+.st-apr{background:var(--lime);color:var(--ink)}
+.st-late{background:var(--orange);color:var(--ink)}
+.st-lock{background:var(--soft2);color:#4A443D}
+.st-ok{background:var(--lime-soft);color:var(--lime-ink)}
+.st-dark{background:var(--ink);color:var(--cream)}
+.chip{display:inline-flex;align-items:center;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:600;letter-spacing:.02em;border:1px solid var(--line2);color:var(--muted)}
+.chip-m{border-color:var(--ink);color:var(--ink)}
+.notice{border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.notice .icon{margin-top:2px}
+.n-orange{background:var(--orange-soft);color:var(--orange-ink)}
+.n-lime{background:var(--lime-soft);color:var(--lime-ink)}
+.n-soft{background:var(--soft);color:var(--ink)}
+.n-amber{background:var(--amber-soft);color:var(--amber-ink)}
+hr.sep{border:0;border-top:1px solid var(--line);margin:4px 0}
+
+/* Forms */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.flabel{font-size:13.5px;font-weight:600;font-family:var(--f-display)}
+input[type=text],input[type=email],input[type=password],input[type=tel],input[type=date],input[type=number],select,textarea{width:100%;border:1.5px solid var(--line2);background:var(--card);border-radius:11px;padding:11px 13px;font-size:15px;min-height:46px}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(193,255,114,.6)}
+input[readonly],textarea[readonly]{background:var(--soft);border-color:transparent}
+.err{color:var(--orange-ink);font-size:13.5px;font-weight:500}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.check input{width:18px;height:18px;margin-top:2px;accent-color:var(--ink)}
+
+/* Brand */
+.brand{display:flex;flex-direction:column;line-height:1;gap:5px;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;color:inherit;text-align:left}
+.brand .b1{font-family:var(--f-display);font-weight:600;font-size:21px;letter-spacing:-.02em}
+.brand .b2{font-family:var(--f-display);font-size:9.5px;letter-spacing:.32em;font-weight:500}
+.brand.on-dark .b2{color:var(--lime)}
+
+/* Demo bar */
+.demobar{background:#2B2A27;color:var(--cream);font-size:12.5px}
+.demobar .wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-block:7px}
+.demobar b{font-family:var(--f-display);letter-spacing:.1em;font-size:11px;color:var(--lime)}
+.demobar button{background:transparent;border:1px solid rgba(251,248,244,.25);color:var(--cream);border-radius:999px;padding:3px 11px;cursor:pointer;font-size:12.5px}
+.demobar button.on{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.demobar .sp{flex:1}
+
+/* Public */
+.pub-dark{background:var(--ink);color:var(--cream)}
+.pubnav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;padding-block:28px 48px;align-items:end}
+@media (max-width:860px){.hero{grid-template-columns:1fr;gap:28px}}
+.hero h1{font-size:clamp(32px,6.4vw,58px);font-weight:600;line-height:1.06}
+.hero h1 em{font-style:normal;color:var(--lime)}
+.hero .lead{color:var(--on-dark-muted);font-size:17px;max-width:52ch}
+.biocard{background:var(--dark-card);border:1px solid var(--dark-line);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:150px 1fr}
+.biocard .ph{background:linear-gradient(160deg,#2A2A26,#151513);display:flex;align-items:center;justify-content:center;min-height:200px}
+.biocard .ph img{width:100%;height:100%;object-fit:cover}
+.biocard .mono{font-family:var(--f-display);font-size:44px;font-weight:600;color:var(--lime);letter-spacing:-.04em}
+.biocard .tx{padding:20px;display:flex;flex-direction:column;gap:8px;justify-content:center}
+.biocard .tx p{color:var(--on-dark-muted);font-size:14px}
+@media (max-width:420px){.biocard{grid-template-columns:110px 1fr}}
+.freeband{border-top:1px solid var(--dark-line)}
+.freeband .wrap{display:flex;gap:12px;align-items:center;padding-block:16px;font-size:14px;color:var(--on-dark-muted)}
+.freeband .dot{width:34px;height:34px;border-radius:50%;background:var(--lime);color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.section{padding-block:56px}
+.code-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.code-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.code-grid{grid-template-columns:1fr}}
+.code-card{border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;min-height:190px}
+.code-card .L{font-family:var(--f-display);font-size:44px;font-weight:700;line-height:1;letter-spacing:-.04em}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:760px){.benefits{grid-template-columns:1fr}}
+.benefit{display:flex;gap:14px;align-items:flex-start}
+.benefit .ic{width:40px;height:40px;border-radius:12px;background:var(--ink);color:var(--lime);display:flex;align-items:center;justify-content:center;flex:none}
+.footer{border-top:1px solid var(--line);padding-block:28px;font-size:13px;color:var(--muted)}
+
+.lightbar{display:flex;align-items:center;gap:12px;padding-block:16px}
+.iconbtn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line2);background:var(--card);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.iconbtn:hover{border-color:var(--ink)}
+.progress{height:8px;border-radius:99px;background:var(--soft2);overflow:hidden}
+.progress>span{display:block;height:100%;background:var(--lime);border-radius:99px;transition:width .3s ease}
+.progress.dark>span{background:var(--ink)}
+.opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:16px 18px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-size:15.5px;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--ink)}
+.opt .rd{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line2);flex:none;display:flex;align-items:center;justify-content:center}
+.opt.sel{background:var(--lime);border-color:var(--lime)}
+.opt.sel .rd{background:var(--ink);border-color:var(--ink);color:var(--lime)}
+.quizfoot{display:grid;grid-template-columns:auto 1fr;gap:12px}
+.infolist{display:flex;flex-direction:column;gap:2px}
+.infolist .it{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.infolist .it:last-child{border-bottom:0}
+.infolist .ic{width:36px;height:36px;border-radius:10px;background:var(--lime-soft);color:var(--lime-ink);display:flex;align-items:center;justify-content:center;flex:none}
+
+/* Results */
+.res-top{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding-block:28px 24px}
+.gauge{position:relative;width:150px;height:150px}
+.gauge svg{width:150px;height:150px;transform:rotate(-90deg)}
+.gauge .v{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge .v b{font-family:var(--f-display);font-size:44px;font-weight:600;line-height:1}
+.gauge .v span{font-size:12px;opacity:.7}
+@media (max-width:520px){.res-top{grid-template-columns:1fr}.gauge{width:130px;height:130px}.gauge svg{width:130px;height:130px}}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding-bottom:28px}
+@media (max-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;position:relative}
+.tile .n{font-family:var(--f-display);font-size:34px;font-weight:600;line-height:1}
+.tile .k{font-family:var(--f-display);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.tile .lv{font-size:12.5px;opacity:.8}
+.tile .flag{position:absolute;top:10px;right:10px;font-size:10.5px;font-weight:700;font-family:var(--f-display);background:var(--ink);color:var(--cream);border-radius:99px;padding:2px 8px;letter-spacing:.04em}
+.tile.dk .flag{background:var(--lime);color:var(--ink)}
+.recs{counter-reset:r;display:flex;flex-direction:column;gap:10px;padding:0;margin:0;list-style:none}
+.recs li{display:flex;gap:12px;align-items:flex-start}
+.recs li::before{counter-increment:r;content:counter(r);width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:13px;font-weight:600;flex:none}
+
+/* CODE bars */
+.dimrow{display:grid;grid-template-columns:34px minmax(80px,120px) 1fr 44px;gap:12px;align-items:center}
+.dimL{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:700}
+.bar{height:10px;border-radius:99px;background:var(--soft2);overflow:hidden}
+.bar>span{display:block;height:100%;border-radius:99px;background:var(--ink)}
+
+/* Private shell */
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.side{background:var(--ink);color:var(--cream);padding:22px 14px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh;overflow:auto}
+.side nav{display:flex;flex-direction:column;gap:2px}
+.side nav button{display:flex;gap:12px;align-items:center;background:none;border:0;color:var(--on-dark-muted);text-align:left;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14.5px;font-weight:500}
+.side nav button:hover{color:var(--cream);background:rgba(251,248,244,.06)}
+.side nav button.on{background:var(--lime);color:var(--ink)}
+.side nav .cnt{margin-left:auto;background:var(--orange);color:var(--ink);font-size:11px;font-weight:700;border-radius:99px;padding:1px 7px}
+.side .who{margin-top:auto;border-top:1px solid var(--dark-line);padding-top:14px;font-size:13px;color:var(--on-dark-muted);display:flex;flex-direction:column;gap:8px}
+.side .who b{color:var(--cream);font-weight:600}
+.main{min-width:0;padding-bottom:40px}
+.topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid var(--line)}
+.topbar select{width:auto;max-width:100%;min-height:40px;padding:8px 12px;font-size:14px;font-weight:500}
+.mobhead{display:none}
+.botnav{display:none}
+.tabnav{display:none}
+.page{padding-block:24px}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .mobhead{display:block;background:var(--ink);color:var(--cream)}
+  .mobhead .wrap{display:flex;justify-content:space-between;align-items:center;padding-block:14px;gap:12px}
+  .botnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;background:var(--ink);z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+  .botnav button{background:none;border:0;color:var(--on-dark-muted);display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 2px 10px;font-size:10.5px;cursor:pointer}
+  .botnav button.on{color:var(--lime)}
+  .main{padding-bottom:96px}
+  .tabnav{display:block;background:var(--ink);border-top:1px solid var(--dark-line)}
+  .tabnav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+  .tabnav button{flex:none;background:none;border:1px solid var(--dark-line);color:var(--on-dark-muted);border-radius:99px;padding:6px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+  .tabnav button.on{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+}
+.ph-title{display:flex;flex-direction:column;gap:6px}
+.list{display:flex;flex-direction:column}
+.li{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left;cursor:pointer}
+.li:last-child{border-bottom:0}
+.li:hover .li-t{text-decoration:underline;text-underline-offset:3px}
+.li-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.li-t{font-weight:600;font-size:14.5px}
+.li-s{font-size:12.5px;color:var(--muted)}
+.meter{display:flex;flex-direction:column;gap:10px}
+.meter .big{font-family:var(--f-display);font-size:40px;font-weight:600;line-height:1}
+.meter .big small{font-size:16px;font-weight:500;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.kpi b{font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1.1}
+.kpi span{font-size:12.5px;color:var(--muted)}
+
+/* Route */
+.stage{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px}
+.stage .num{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:22px;font-weight:700}
+.stage .rail{display:flex;flex-direction:column;align-items:center;gap:6px}
+.stage .rail::after{content:"";flex:1;width:2px;background:var(--line2);min-height:20px}
+.stage:last-child .rail::after{display:none}
+.stage.locked .num{background:var(--soft2)!important;color:#4A443D!important}
+.actrow{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);cursor:pointer;width:100%;text-align:left}
+.actrow:hover{border-color:var(--ink)}
+.actrow.dis{cursor:default;opacity:.62}
+.actrow.dis:hover{border-color:var(--line)}
+
+/* Activity */
+.qblock{display:flex;flex-direction:column;gap:8px}
+.comment{background:var(--orange-soft);color:var(--orange-ink);border-radius:10px;padding:10px 12px;font-size:13.5px;display:flex;gap:8px}
+.comment.ok{background:var(--lime-soft);color:var(--lime-ink)}
+.savebar{position:sticky;bottom:0;background:var(--cream);border-top:1px solid var(--line);padding-block:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:5}
+@media (max-width:900px){.savebar{bottom:60px}}
+.savestate{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center;margin-right:auto}
+details.ver{border:1px solid var(--line);border-radius:12px;background:var(--card)}
+details.ver summary{padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:center;flex-wrap:wrap;list-style:none}
+details.ver summary::-webkit-details-marker{display:none}
+details.ver .body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.ans{background:var(--soft);border-radius:10px;padding:10px 12px;white-space:pre-wrap;font-size:14px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale button{border:1.5px solid var(--line2);background:var(--card);border-radius:11px;padding:10px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.scale button b{font-family:var(--f-display);font-size:18px}
+.scale button span{font-size:10.5px;color:var(--muted)}
+.scale button.sel{background:var(--lime);border-color:var(--lime)}
+.scale button.sel span{color:var(--ink)}
+.scale button:disabled{cursor:default}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-family:var(--f-display);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+
+/* Charts */
+.cols{display:flex;align-items:flex-end;gap:10px;height:180px;padding-top:18px}
+.cols .c{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;min-width:0}
+.cols .stk{width:100%;max-width:46px;position:relative;display:flex;align-items:flex-end;flex:1}
+.cols .s1{position:absolute;bottom:0;left:0;right:0;background:var(--soft2);border-radius:6px 6px 2px 2px}
+.cols .s2{position:absolute;bottom:0;left:18%;right:18%;background:var(--ink);border-radius:5px 5px 2px 2px}
+.cols .lab{font-size:11px;color:var(--muted);white-space:nowrap}
+.cols .val{font-size:11px;font-weight:600}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.cmp{display:grid;grid-template-columns:minmax(90px,130px) 1fr 56px;gap:12px;align-items:center}
+.cmp .bars{display:flex;flex-direction:column;gap:5px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--cream);padding:12px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s ease;z-index:50;display:flex;gap:8px;align-items:center;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast .icon{color:var(--lime)}
+@media (max-width:900px){.toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.fade{animation:fade .35s ease both}
+@keyframes fade{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+.login{min-height:calc(100vh - 34px);display:grid;grid-template-columns:1fr 1fr}
+.login .l{padding-block:40px;display:flex;flex-direction:column;justify-content:center}
+.login .r{background:var(--cream);color:var(--ink);display:flex;align-items:center}
+.login .r .box{width:100%;max-width:420px;margin:0 auto;padding-block:40px}
+@media (max-width:860px){.login{grid-template-columns:1fr;min-height:0}.login .l{padding-block:24px 8px}}
+.arc{position:absolute;pointer-events:none}
+</style>
+
+</head>
+<body>
+<div id="demo"></div>
+<div id="app"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================== CONSTANTES ============================== */
+const DIMS=[
+ {k:'C',name:'Convertir',tag:'Tu conocimiento en una oferta rentable',desc:'Transformar tu conocimiento y experiencia en una oferta que las personas quieran comprar.',obj:'Definir una oferta principal clara: cliente, problema y resultado.',bg:'#FF751F',fg:'#020202'},
+ {k:'O',name:'Ordenar',tag:'Un negocio rentable y sostenible',desc:'Organizar ese conocimiento dentro de un modelo de negocio rentable.',obj:'Estructurar precios, proceso de entrega e ingresos.',bg:'#C1FF72',fg:'#020202'},
+ {k:'D',name:'Digitalizar',tag:'Procesos con tecnología e IA',desc:'Usar herramientas digitales e inteligencia artificial para mejorar la eficiencia y las posibilidades del negocio.',obj:'Incorporar herramientas e IA en las tareas clave del negocio.',bg:'#020202',fg:'#FBF8F4'},
+ {k:'E',name:'Escalar',tag:'Conseguir clientes y crecer',desc:'Atraer más clientes, incrementar los ingresos y crear oportunidades de crecimiento.',obj:'Crear canales predecibles de atracción y crecimiento.',bg:'#FFD2B5',fg:'#020202'}
+];
+const DIM=Object.fromEntries(DIMS.map(d=>[d.k,d]));
+const PUBLIC_Q=[
+ ['C','¿Qué tan claro tienes el problema específico que resuelves con tu conocimiento?',['Todavía no lo he definido','Tengo una idea general','Lo tengo claro, pero me cuesta explicarlo','Lo explico en una frase y mis clientes lo reconocen']],
+ ['C','¿Tienes una oferta principal definida (servicio o programa)?',['No, hago lo que me van pidiendo','Tengo varias ofertas, sin una principal','Tengo una oferta principal, aún sin estructura','Tengo una oferta con nombre, alcance y resultado claro']],
+ ['C','¿Has vendido tu conocimiento como un servicio pagado?',['Todavía no','Algunas veces, de forma ocasional','Con regularidad, sobre todo por referidos','De forma constante y con clientes recurrentes']],
+ ['O','¿Cómo definirías los precios de tus servicios?',['Aún no tengo precios definidos','Tengo precios, pero los ajusto caso por caso','Mis precios están bien definidos y comunicados','Reviso y ajusto mis precios de forma estratégica']],
+ ['O','¿Cómo está organizado tu proceso de trabajo con un cliente?',['Cada caso es distinto','Tengo los pasos en mi cabeza','Tengo un proceso documentado','Tengo un método propio con etapas y entregables']],
+ ['O','¿Sabes cuánto ingresa y cuánto te cuesta tu negocio cada mes?',['No lo controlo','Lo reviso de vez en cuando','Lo registro cada mes','Lo uso para tomar decisiones']],
+ ['D','¿Qué herramientas digitales usas para atender a tus clientes?',['Principalmente WhatsApp y llamadas','Correo, documentos y redes de forma básica','Agenda en línea, formularios y nube','Un sistema integrado y con automatizaciones']],
+ ['D','¿Usas inteligencia artificial en tu trabajo?',['No la uso','La he probado algunas veces','La uso para tareas puntuales','La integro en los procesos de mi negocio']],
+ ['D','¿Tu conocimiento existe en algún formato digital (curso, guía, plantilla)?',['No','Tengo material disperso','Tengo algún recurso terminado','Tengo productos digitales que vendo']],
+ ['E','¿Cómo llegan hoy tus nuevos clientes?',['No llegan de forma constante','Principalmente por referidos','Por referidos y algo de redes sociales','Por canales que atraen clientes de forma predecible']],
+ ['E','¿Con qué frecuencia publicas contenido que muestra tu experiencia?',['Casi nunca','De vez en cuando','Cada semana','Con un plan de contenido sostenido']],
+ ['E','¿Podrías atender el doble de clientes sin trabajar el doble de horas?',['No, ya estoy al límite','Solo con mucho esfuerzo','Con algunos ajustes','Sí, mi modelo está preparado para crecer']]
+].map(([dim,text,opts],i)=>({id:'q'+(i+1),dim,text,opts}));
+const PRIV_SECTIONS={C:'Tu conocimiento y tu oferta',O:'Modelo de negocio',D:'Herramientas y procesos',E:'Clientes y crecimiento'};
+const PRIVATE_Q=[
+ {id:'c1',dim:'C',type:'scale',text:'¿Qué tan claro tienes el problema que resuelves y para quién?'},
+ {id:'c2',dim:'C',type:'scale',text:'¿Qué tan definida está tu oferta principal?'},
+ {id:'c3',dim:'C',type:'text',text:'Describe en pocas palabras qué haces y para quién.',ph:'Ej.: Acompaño a gerentes de talento humano a reducir la rotación…'},
+ {id:'o1',dim:'O',type:'scale',text:'¿Qué tan definidos y comunicados están tus precios?'},
+ {id:'o2',dim:'O',type:'scale',text:'¿Qué tan estructurado está tu proceso de entrega?'},
+ {id:'o3',dim:'O',type:'text',text:'¿Cuál es tu propuesta de valor?',ph:'Describe cómo ayudas a tus clientes y qué te hace diferente.'},
+ {id:'d1',dim:'D',type:'scale',text:'¿Cuánto usas herramientas digitales en tu operación diaria?'},
+ {id:'d2',dim:'D',type:'scale',text:'¿Cuánto usas la inteligencia artificial en tu trabajo?'},
+ {id:'d3',dim:'D',type:'text',text:'¿Qué tareas te quitan más tiempo hoy?',ph:'Ej.: responder mensajes, preparar propuestas, agendar…'},
+ {id:'e1',dim:'E',type:'scale',text:'¿Qué tan constante es la llegada de nuevos clientes?'},
+ {id:'e2',dim:'E',type:'scale',text:'¿Qué tan visible es tu experiencia para tu público?'},
+ {id:'e3',dim:'E',type:'text',text:'¿Cuáles son tus principales clientes hoy?',ph:'Describe los tipos de clientes, sus necesidades y cómo llegas a ellos.'}
+];
+const SCALE_L=['Inicial','Básico','En desarrollo','Avanzado','Consolidado'];
+const RECS={
+ C:['Escribe en una frase el problema que resuelves y para quién.','Define una oferta principal con nombre, alcance y resultado.','Valida tu oferta conversando con tres clientes potenciales esta semana.'],
+ O:['Fija un precio base para tu oferta principal y escríbelo.','Documenta tu proceso de trabajo en cuatro a seis pasos.','Registra los ingresos y gastos de tu último mes.'],
+ D:['Elige una tarea repetitiva y prueba resolverla con IA.','Organiza tus materiales en una carpeta digital por tema.','Crea un formulario simple para recibir solicitudes de clientes.'],
+ E:['Elige un canal principal para mostrar tu experiencia.','Publica una pieza por semana basada en un caso real.','Identifica qué parte de tu servicio podría ofrecerse en grupo.']
+};
+const PRIO_MSG={
+ C:'Tu conocimiento tiene valor, pero todavía no está empaquetado como una oferta clara que las personas entiendan y quieran comprar.',
+ O:'Tienes conocimiento y oportunidades, pero falta estructura: precios, procesos e ingresos organizados para que el negocio sea rentable.',
+ D:'Tu negocio depende demasiado de tu tiempo. Las herramientas digitales y la IA pueden liberar horas y abrir nuevos formatos.',
+ E:'Tu oferta funciona, pero los clientes no llegan de forma constante. Necesitas canales que atraigan oportunidades de manera predecible.'
+};
+const STRONG_MSG={C:'Claridad sobre tu conocimiento y lo que ofreces.',O:'Orden en precios y procesos.',D:'Uso de herramientas digitales.',E:'Capacidad para atraer clientes.'};
+const ADMIN_EMAIL='tiby@miexpansion.co';
+const ST={sin:['Sin iniciar','st-sin'],borrador:['Borrador','st-bor'],revision:['En revisión','st-rev'],ajustes:['Requiere ajustes','st-aju'],aprobado:['Aprobado','st-apr']};
+const DIAG_ST={no_iniciado:['Sin iniciar','st-sin'],en_progreso:['En progreso','st-bor'],enviado:['En revisión de Tiby','st-rev'],correccion:['Corrección autorizada','st-aju'],validado:['Validado','st-apr']};
+
+/* ============================== UTILIDADES ============================== */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fd(s){if(!s)return '—';const [y,m,d]=String(s).slice(0,10).split('-');return `${+d} ${MES[+m-1]} ${y}`}
+function isoOf(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function todayISO(){return isoOf(new Date())}
+function nowTs(){return new Date().toISOString()}
+function addDays(iso,n){const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return isoOf(d)}
+function daysSince(ts){return (Date.now()-new Date(ts).getTime())/864e5}
+function hm(ts){try{return new Date(ts).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
+const uid=p=>p+Math.random().toString(36).slice(2,9);
+const clone=o=>JSON.parse(JSON.stringify(o));
+function level(n){return n>=70?'Consolidado':n>=40?'En desarrollo':'Inicial'}
+function rng(seed){let s=seed;return()=>{s=(s*1664525+1013904223)%4294967296;return s/4294967296}}
+
+/* ============================== ICONOS ============================== */
+const P={
+ arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',back:'<path d="M19 12H5M11 18l-6-6 6-6"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+ lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+ home:'<path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/>',route:'<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.5"/>',
+ chart:'<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+ layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+ users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.4 3.5 5.2"/>',
+ doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ alert:'<path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.5v.5"/>',spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>',
+ wa:'<path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-1 .8a4 4 0 0 1-2.1-2.1l.8-1-1-2z"/>',
+ eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9L7 7M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+ edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>',
+ inbox:'<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/>',shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+ bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>',msg:'<path d="M4 5h16v11H9l-5 4z"/>',out:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>'
+};
+const I=(n,cls='')=>`<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true">${P[n]||''}</svg>`;
+
+/* ============================== DATOS DEMO ============================== */
+function seed(){
+ const lib=[
+  {id:'L1',name:'Define tu oferta principal',dim:'C',purpose:'Convertir tu conocimiento en una oferta que se entienda en una frase.',instructions:'Responde con ejemplos concretos. Piensa en el cliente que más disfrutas atender y en el resultado que más valora.',fields:['¿Qué problema resuelves?','¿Para quién es tu oferta?','¿Qué resultado concreto obtiene tu cliente?','Nombre provisional de tu oferta'],active:true,version:1},
+  {id:'L2',name:'Perfil de tu cliente ideal',dim:'C',purpose:'Describir con precisión a la persona que compra tu oferta.',instructions:'Describe a una persona real o muy cercana a la realidad. Evita respuestas genéricas como «empresas» o «emprendedores».',fields:['Describe a tu cliente ideal','¿Qué le preocupa hoy?','¿Dónde busca soluciones?'],active:true,version:1},
+  {id:'L3',name:'Tu historia de experto',dim:'C',purpose:'Construir el relato que respalda tu autoridad.',instructions:'Cuenta cómo llegaste a dominar tu tema y comparte un caso con resultados.',fields:['¿Cómo llegaste a dominar este tema?','Un caso que demuestre tu experiencia'],active:true,version:1},
+  {id:'L4',name:'Estructura de precios',dim:'O',purpose:'Definir un precio base defendible para tu oferta principal.',instructions:'Indica el precio, lo que incluye y por qué vale eso para tu cliente.',fields:['Precio de tu oferta principal','¿Qué incluye ese precio?','¿Cómo justificas ese valor ante tu cliente?'],active:true,version:2},
+  {id:'L5',name:'Mapa de ingresos',dim:'O',purpose:'Conectar tu oferta con una meta de ingresos realista.',instructions:'Haz las cuentas con números reales de los últimos meses.',fields:['Fuentes de ingreso actuales','Meta de ingresos a 90 días','¿Cuántos clientes necesitas para lograrla?'],active:true,version:1},
+  {id:'L6',name:'Proceso de entrega',dim:'O',purpose:'Documentar las etapas de tu servicio.',instructions:'Describe de cuatro a seis pasos, desde el primer contacto hasta el cierre.',fields:['Etapas de tu proceso','Entregable de cada etapa'],active:true,version:1},
+  {id:'L7',name:'Inventario de herramientas',dim:'D',purpose:'Saber qué herramientas usas hoy y cuáles faltan.',instructions:'Lista las herramientas que usas y para qué. Marca las tareas que todavía haces a mano.',fields:['Herramientas que usas hoy','Tareas que haces a mano','Herramienta que te gustaría incorporar'],active:true,version:1},
+  {id:'L8',name:'Primera automatización con IA',dim:'D',purpose:'Resolver una tarea repetitiva con inteligencia artificial.',instructions:'Elige una sola tarea y describe cómo la harías con IA.',fields:['Tarea elegida','Cómo la resolverías con IA','Tiempo que esperas ahorrar por semana'],active:true,version:1},
+  {id:'L9',name:'Plan de visibilidad 30 días',dim:'E',purpose:'Mostrar tu experiencia de forma constante.',instructions:'Define un canal, una frecuencia y cuatro temas.',fields:['Canal principal','Frecuencia de publicación','Cuatro temas para el mes'],active:true,version:1},
+  {id:'L10',name:'Ruta de conversación con prospectos',dim:'E',purpose:'Convertir conversaciones en clientes.',instructions:'Describe cómo pasas de un primer mensaje a una propuesta.',fields:['Primer mensaje','Preguntas clave','Cómo presentas tu propuesta'],active:true,version:1},
+  {id:'L11',name:'Análisis de competencia (versión anterior)',dim:'C',purpose:'Comparar tu oferta con alternativas del mercado.',instructions:'Reemplazada por «Perfil de tu cliente ideal».',fields:['Competidores','Diferencias'],active:false,version:1}
+ ];
+ const A=(libId,o)=>{const L=lib.find(x=>x.id===libId);return {id:uid('as'),libId,ver:L.version,name:L.name,stage:L.dim,purpose:L.purpose,instructions:L.instructions,fields:[...L.fields],mandatory:o.m,due:o.due||null,assignedAt:o.at||'2026-09-08',active:true,versions:o.v||[],draft:o.draft||null,approvedVersion:o.appr||null,approvedAt:o.apprAt||null}};
+ const R=(date,decision,general,comments)=>({date,decision,general,comments:comments||{},by:'Tiby Hernández'});
+ const pv1={type:'pub',v:1,status:'publicado',publishedAt:'2026-08-25',questions:clone(PUBLIC_Q)};
+ const qv1={type:'priv',v:1,status:'publicado',publishedAt:'2026-08-25',questions:clone(PRIVATE_Q)};
+ const dg=(answers,status,extra)=>({version:1,status,answers,startedAt:'2026-09-02',sentAt:status!=='no_iniciado'&&status!=='en_progreso'?'2026-09-04':null,scores:status!=='no_iniciado'&&status!=='en_progreso'?privScores(answers):null,obs:'',validatedAt:null,corrections:[],correction:null,...(extra||{})});
+ const mariaDiag={c1:4,c2:3,c3:'Acompaño a empresas de servicios a reducir la rotación con programas de bienestar laboral.',o1:2,o2:3,o3:'Combino psicología organizacional con métricas de negocio: el bienestar se mide en rotación y productividad.',d1:2,d2:1,d3:'Preparar propuestas y responder mensajes de WhatsApp.',e1:2,e2:2,e3:'Gerentes de talento humano de empresas medianas, casi siempre por referidos.'};
+ const carlosDiag={c1:3,c2:2,c3:'Asesoro a restaurantes pequeños en costos y compras.',o1:3,o2:4,o3:'Reduzco el costo de insumos sin bajar la calidad del menú.',d1:4,d2:3,d3:'Hacer inventarios y reportes semanales.',e1:2,e2:1,e3:'Restaurantes de barrio en Bogotá, por recomendación.'};
+ const lauraDiag={c1:3,c2:3,c3:'Doy clases de finanzas personales a profesionales jóvenes.',o1:2,o2:2,o3:'Explico finanzas sin tecnicismos.',d1:3,d2:3,d3:'Grabar y editar contenido.',e1:3,e2:4,e3:'Profesionales de 25 a 35 años por Instagram.'};
+
+ const pt1={id:'pt1',pid:'p1',programId:'prog1',cohortId:'coh1',start:'2026-09-01',end:'2026-11-30',
+  diag:{initial:dg(mariaDiag,'validado',{validatedAt:'2026-09-07',obs:'María tiene una base sólida en Convertir. Prioridad: ordenar precios y procesos antes de digitalizar. Empezamos por cerrar la oferta.'}),final:{enabled:false,status:'no_iniciado',answers:{},version:1,scores:null}},
+  routeApproved:true,routeApprovedAt:'2026-09-08',stages:{C:true,O:true,D:false,E:false},
+  assignments:[
+   A('L1',{m:true,due:'2026-09-20',v:[
+     {n:1,answers:['Equipos con alta rotación y desgaste.','Empresas.','Mejorar el clima laboral.','Programa de bienestar'],sentAt:'2026-09-15T15:10:00Z',review:R('2026-09-17T13:00:00Z','ajustes','Buen inicio. Precisa cliente y resultado para que la oferta se entienda en una frase.',{1:'«Empresas» es muy amplio. ¿Qué tamaño y sector?',2:'Haz el resultado medible: ¿qué cambia en 90 días?'})},
+     {n:2,answers:['Equipos con alta rotación y desgaste emocional que afecta la productividad.','Empresas de servicios de 50 a 200 empleados en Colombia, con área de talento humano.','Reducir la rotación voluntaria y mejorar el clima laboral, medido en 90 días.','Equipos que se Quedan: programa de bienestar laboral en 90 días'],sentAt:'2026-09-20T22:30:00Z',review:R('2026-09-22T14:00:00Z','aprobado','Excelente. Oferta clara, cliente definido y resultado medible.',{3:'Me encanta el nombre. Fácil de recordar.'})}],appr:2,apprAt:'2026-09-22'}),
+   A('L2',{m:true,due:'2026-10-10',v:[
+     {n:1,answers:['Gerente de talento humano.','La rotación.','Internet.'],sentAt:'2026-10-08T18:00:00Z',review:R('2026-10-10T15:20:00Z','ajustes','Vas bien. Necesito más detalle para que este perfil te sirva al comunicar tu oferta.',{0:'Agrega cargo, tipo de empresa y qué decisiones toma.',2:'¿En qué espacios concretos? Eventos, LinkedIn, gremios…'})}]}),
+   A('L3',{m:false,v:[{n:1,answers:['Llevo 12 años acompañando equipos en empresas de servicios; empecé como psicóloga de selección.','En 2024 acompañé a un call center de 140 personas que redujo su rotación del 38 % al 22 % en seis meses.'],sentAt:'2026-10-18T20:00:00Z',review:null}]}),
+   A('L4',{m:true,due:'2026-10-15',at:'2026-10-01',draft:{answers:['COP 9.800.000 por programa de 90 días','',''],savedAt:'2026-10-14T21:40:00Z'}}),
+   A('L5',{m:true,due:'2026-11-05',at:'2026-10-01'}),
+   A('L7',{m:true,due:'2026-11-15',at:'2026-10-01'}),
+   A('L8',{m:false,at:'2026-10-01'}),
+   A('L9',{m:true,due:'2026-11-25',at:'2026-10-01'})
+  ],
+  notices:[
+   {date:'2026-10-12T16:00:00Z',type:'Fecha de entrega',text:'La fecha de entrega de «Estructura de precios» pasó al 15 oct 2026.'},
+   {date:'2026-10-01T14:00:00Z',type:'Etapa habilitada',text:'Tiby habilitó la etapa Ordenar. Ya puedes trabajar sus actividades.'},
+   {date:'2026-10-01T13:50:00Z',type:'Actividad agregada',text:'Se agregó la actividad complementaria «Primera automatización con IA».'}
+  ],
+  history:[
+   {date:'2026-10-12T16:00:00Z',change:'Fecha de entrega · Estructura de precios',before:'10 oct 2026',after:'15 oct 2026',author:'Tiby Hernández'},
+   {date:'2026-10-01T14:00:00Z',change:'Etapa Ordenar',before:'Bloqueada',after:'Habilitada',author:'Tiby Hernández'},
+   {date:'2026-10-01T13:50:00Z',change:'Actividad agregada · Primera automatización con IA',before:'—',after:'Complementaria',author:'Tiby Hernández'},
+   {date:'2026-09-08T15:00:00Z',change:'Ruta aprobada',before:'Borrador',after:'Aprobada · Convertir habilitada',author:'Tiby Hernández'}
+  ],notes:'Muy comprometida. Revisar precios con ella en la sesión del 23 oct.'};
+ const pt2={id:'pt2',pid:'p1',programId:'prog2',cohortId:null,start:'2026-03-02',end:'2026-05-29',
+  diag:{initial:dg({c1:3,c2:2,c3:'Psicóloga que quiere crear su marca personal.',o1:1,o2:2,o3:'Cercanía y experiencia en empresas.',d1:2,d2:1,d3:'Redes sociales.',e1:1,e2:1,e3:'Contactos de antiguos empleos.'},'validado',{validatedAt:'2026-03-06',obs:'Foco en posicionamiento y primera oferta.'}),final:{enabled:true,status:'en_progreso',answers:{c1:4},version:1,scores:null}},
+  routeApproved:true,routeApprovedAt:'2026-03-07',stages:{C:true,O:true,D:false,E:true},
+  assignments:[
+   A('L1',{m:true,due:'2026-03-25',at:'2026-03-07',v:[{n:1,answers:['No sé cómo presentarme profesionalmente.','Profesionales de recursos humanos.','Una marca personal clara.','Marca con Propósito'],sentAt:'2026-03-20T15:00:00Z',review:R('2026-03-22T15:00:00Z','aprobado','Buen punto de partida para tu marca.',{})}],appr:1,apprAt:'2026-03-22'}),
+   A('L4',{m:true,due:'2026-04-20',at:'2026-03-07',v:[{n:1,answers:['COP 450.000 por sesión de mentoría','Sesión de 90 minutos y plan de acción','Resultados en empresas anteriores'],sentAt:'2026-04-18T15:00:00Z',review:R('2026-04-21T15:00:00Z','aprobado','Precio coherente con tu experiencia.',{})}],appr:1,apprAt:'2026-04-21'}),
+   A('L9',{m:true,due:'2026-05-20',at:'2026-04-25',v:[{n:1,answers:['Instagram','Cuando pueda','Bienestar'],sentAt:'2026-05-18T15:00:00Z',review:R('2026-05-27T15:00:00Z','ajustes','Define una frecuencia fija y cuatro temas concretos.',{1:'«Cuando pueda» no es un plan. Propón días fijos.'})}]})
+  ],notices:[{date:'2026-04-25T12:00:00Z',type:'Etapa habilitada',text:'Tiby habilitó la etapa Escalar.'}],history:[{date:'2026-04-25T12:00:00Z',change:'Etapa Escalar',before:'Bloqueada',after:'Habilitada',author:'Tiby Hernández'}],notes:''};
+ const pt3={id:'pt3',pid:'p2',programId:'prog1',cohortId:'coh1',start:'2026-10-13',end:'2027-01-10',
+  diag:{initial:{...dg(carlosDiag,'enviado'),startedAt:'2026-10-14',sentAt:'2026-10-19T19:00:00Z'},final:{enabled:false,status:'no_iniciado',answers:{},version:1,scores:null}},
+  routeApproved:false,stages:{C:false,O:false,D:false,E:false},assignments:[],notices:[],history:[],notes:''};
+ const pt4={id:'pt4',pid:'p3',programId:'prog1',cohortId:'coh1',start:'2026-09-01',end:'2026-11-30',
+  diag:{initial:dg(lauraDiag,'validado',{validatedAt:'2026-09-06'}),final:{enabled:false,status:'no_iniciado',answers:{},version:1,scores:null}},
+  routeApproved:true,stages:{C:true,O:false,D:false,E:false},
+  assignments:[A('L1',{m:true,due:'2026-10-01',v:[{n:1,answers:['Las personas jóvenes no saben ahorrar.','Profesionales de 25 a 35 años.','Un plan de ahorro mensual.','Finanzas sin miedo'],sentAt:'2026-10-16T14:00:00Z',review:null}]}),A('L2',{m:true,due:'2026-10-20'})],
+  notices:[],history:[{date:'2026-10-17T10:00:00Z',change:'Acceso suspendido',before:'Activo',after:'Suspendido',author:'Tiby Hernández'}],notes:'Suspendida a pedido suyo por viaje. Reactivar al regresar.'};
+ const pt5={id:'pt5',pid:'p4',programId:'prog1',cohortId:'coh2',start:'2026-11-03',end:'2027-01-31',
+  diag:{initial:{version:1,status:'no_iniciado',answers:{},startedAt:null,sentAt:null,scores:null,obs:'',validatedAt:null,corrections:[],correction:null},final:{enabled:false,status:'no_iniciado',answers:{},version:1,scores:null}},
+  routeApproved:false,stages:{C:false,O:false,D:false,E:false},assignments:[],notices:[],history:[],notes:''};
+
+ // Intentos anónimos de ejemplo para estadísticas
+ const r=rng(7),attempts=[];const base=new Date('2026-08-26T12:00:00');
+ for(let i=0;i<214;i++){
+  const d=new Date(base.getTime()+Math.floor(r()*56)*864e5);const done=r()<.67;
+  const a={id:'S'+i,v:1,start:d.toISOString(),status:done?'completado':'incompleto',synthetic:true,waClicks:0};
+  if(done){const bias={C:.55,O:.38,D:.3,E:.42};const sc={};DIMS.forEach(x=>{sc[x.k]=Math.max(0,Math.min(100,Math.round((bias[x.k]+(r()-.5)*.6)*100/11)*11))});
+   a.end=a.start;a.scores=sc;const res=analyze(sc);a.strong=res.strong;a.prio=res.prio;a.waClicks=r()<.31?1:0;}
+  attempts.push(a);
+ }
+ return {
+  site:{heroTitle:'¿Tu experiencia profesional está generando los',heroHighlight:'ingresos que podría?',heroText:'Descubre qué necesita tu negocio para convertir tu conocimiento en una oferta rentable, trabajar con mayor eficiencia y conseguir más clientes.',ctaPrimary:'Descubrir mi punto de partida',ctaSecondary:'Soy participante',bioTitle:'Hola, soy Tiby Hernández',bio:'Acompaño a profesionales a convertir su experiencia en negocios rentables y con mayor impacto. Ingeniera, doctora en Ciencias Gerenciales y mentora con más de 30 años en tecnología y negocios.',diagTitle:'Un diagnóstico gratuito para identificar tu punto de partida',whatsapp:'573246755280',photo:null,dims:Object.fromEntries(DIMS.map(d=>[d.k,d.desc])),updatedAt:'2026-10-15'},
+  publicActive:true,pubVersions:[pv1],pubCurrent:1,privVersions:[qv1],privCurrent:1,
+  attempts,browser:{current:null,mine:[]},
+  participants:[
+   {id:'p1',nombre:'María',apellido:'Rodríguez',email:'maria@demo.co',password:'demo1234',tel:'+57 310 555 0101',pais:'Colombia',profesion:'Psicóloga organizacional',experiencia:'12 años en gestión del talento y bienestar laboral.',organizacion:'Independiente',negocio:'Equipos que se Quedan',actividad:'Consultoría en bienestar laboral',servicios:'Diagnósticos de clima, talleres para líderes',clientes:'Empresas de servicios de 50 a 200 empleados',objetivos:'Tener una oferta clara y tres clientes recurrentes en 2027.',status:'activo',joined:'2026-03-02'},
+   {id:'p2',nombre:'Carlos',apellido:'Méndez',email:'carlos@demo.co',password:'demo1234',tel:'+57 311 555 0202',pais:'Colombia',profesion:'Administrador de empresas',experiencia:'15 años en restaurantes.',organizacion:'Independiente',negocio:'Costos Claros',actividad:'Asesoría gastronómica',servicios:'Control de costos e inventarios',clientes:'Restaurantes pequeños',objetivos:'Pasar de asesorías sueltas a un programa.',status:'activo',joined:'2026-10-13'},
+   {id:'p3',nombre:'Laura',apellido:'Gómez',email:'laura@demo.co',password:'demo1234',tel:'+57 312 555 0303',pais:'Panamá',profesion:'Contadora',experiencia:'8 años en banca.',organizacion:'',negocio:'Finanzas sin miedo',actividad:'Educación financiera',servicios:'Talleres y asesorías',clientes:'Profesionales jóvenes',objetivos:'Lanzar un curso.',status:'suspendido',joined:'2026-09-01'},
+   {id:'p4',nombre:'Andrés',apellido:'Pérez',email:'andres@demo.co',password:null,tel:'',pais:'República Dominicana',profesion:'Ingeniero industrial',experiencia:'',organizacion:'',negocio:'',actividad:'',servicios:'',clientes:'',objetivos:'',status:'invitado',joined:'2026-10-20',inviteToken:'inv-andres'}
+  ],
+  programs:[
+   {id:'prog1',name:'Profesionales en Expansión',desc:'Mentoría grupal de 90 días para convertir la experiencia profesional en un negocio.',start:'2026-09-01',end:'2027-01-31',status:'activo'},
+   {id:'prog2',name:'Mentoría Individual · Marca Personal',desc:'Acompañamiento uno a uno para construir la marca personal y la primera oferta.',start:'2026-03-01',end:'2026-12-31',status:'activo'}
+  ],
+  cohorts:[
+   {id:'coh1',programId:'prog1',name:'Cohorte Septiembre 2026',start:'2026-09-01',end:'2026-11-30'},
+   {id:'coh2',programId:'prog1',name:'Cohorte Noviembre 2026',start:'2026-11-03',end:'2027-01-31'}
+  ],
+  participations:[pt1,pt2,pt3,pt4,pt5],library:lib,deletions:[]
+ };
+}
+
+/* ============================== ESTADO ============================== */
+const KEY='mi-expansion-demo-v1',UKEY='mi-expansion-ui-v1';
+function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
+let saveT;function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}},150)}
+function saveUI(){try{localStorage.setItem(UKEY,JSON.stringify({role:UI.role,uid:UI.uid,partId:UI.partId,view:UI.view,params:UI.params}))}catch(e){}}
+let S=load()||seed();
+let UI={role:'public',uid:null,partId:null,view:'home',params:{},err:'',flash:null};
+try{const u=JSON.parse(localStorage.getItem(UKEY)||'null');if(u)Object.assign(UI,u)}catch(e){}
+
+/* ============================== LÓGICA ============================== */
+function analyze(sc){
+ const vals=DIMS.map(d=>sc[d.k]);const max=Math.max(...vals),min=Math.min(...vals);
+ return {strong:DIMS.filter(d=>sc[d.k]===max).map(d=>d.k),prio:DIMS.filter(d=>sc[d.k]===min).map(d=>d.k),overall:Math.round(vals.reduce((a,b)=>a+b,0)/4)};
+}
+function pubVersion(v){return S.pubVersions.find(x=>x.v===v)}
+function privVersion(v){return S.privVersions.find(x=>x.v===v)}
+function pubScores(att){
+ const qs=pubVersion(att.v).questions,sc={};
+ DIMS.forEach(d=>{const q=qs.filter(x=>x.dim===d.k);const sum=q.reduce((a,x)=>a+(att.answers[x.id]??0),0);sc[d.k]=Math.round(sum/(q.length*3)*100)});
+ return sc;
+}
+function privScores(ans,v){
+ const qs=(v&&privVersion(v)?privVersion(v).questions:PRIVATE_Q),sc={};
+ DIMS.forEach(d=>{const q=qs.filter(x=>x.dim===d.k&&x.type==='scale');const avg=q.reduce((a,x)=>a+(+ans[x.id]||1),0)/q.length;sc[d.k]=Math.round((avg-1)/4*100)});
+ return sc;
+}
+function pickRecs(sc){
+ const res=analyze(sc);const asc=[...DIMS].sort((a,b)=>sc[a.k]-sc[b.k]).map(d=>d.k);const out=[];
+ if(res.prio.length===1){out.push({k:res.prio[0],t:RECS[res.prio[0]][0]},{k:res.prio[0],t:RECS[res.prio[0]][1]},{k:asc[1],t:RECS[asc[1]][0]})}
+ else{let i=0;while(out.length<3){const k=res.prio[i%res.prio.length];const idx=Math.floor(i/res.prio.length);out.push({k,t:RECS[k][idx]});i++}}
+ return out;
+}
+const names=ks=>{const n=ks.map(k=>DIM[k].name);return n.length<2?n[0]:n.slice(0,-1).join(', ')+' y '+n[n.length-1]};
+function waMessage(prio){return `Hola, Tiby. Hice el diagnóstico Mi Expansión y mi${prio.length>1?'s dimensiones prioritarias son':' dimensión prioritaria es'} ${names(prio)}. Me gustaría conversar sobre cómo avanzar.`}
+
+function me(){return S.participants.find(p=>p.id===UI.uid)}
+function partsOf(pid){return S.participations.filter(x=>x.pid===pid)}
+function part(id){return S.participations.find(x=>x.id===id)}
+function prog(id){return S.programs.find(x=>x.id===id)||{name:'—'}}
+function coh(id){return S.cohorts.find(x=>x.id===id)}
+function person(id){return S.participants.find(x=>x.id===id)}
+function fullName(p){return p?`${p.nombre} ${p.apellido}`.trim():'—'}
+function partActive(pt){return pt.end>=todayISO()}
+function curPart(){const u=me();if(!u)return null;let pt=part(UI.partId);if(!pt||pt.pid!==u.id){const ps=partsOf(u.id);pt=ps.filter(partActive).sort((a,b)=>b.start.localeCompare(a.start))[0]||ps[0];UI.partId=pt&&pt.id}return pt}
+function dStatus(a){
+ if(a.approvedVersion)return 'aprobado';
+ const last=a.versions[a.versions.length-1];
+ if(last&&!last.review)return 'revision';
+ if(last&&last.review.decision==='ajustes')return 'ajustes';
+ if(a.draft)return 'borrador';
+ return 'sin';
+}
+function isLate(a){return !!a.due&&a.due<todayISO()&&['sin','borrador'].includes(dStatus(a))}
+function progress(pt){
+ const act=pt.assignments.filter(a=>a.active),mand=act.filter(a=>a.mandatory);
+ const appr=mand.filter(a=>dStatus(a)==='aprobado').length;
+ return {mand:mand.length,appr,pct:mand.length?Math.round(appr/mand.length*100):null,total:act.length,presented:act.filter(a=>a.versions.length>0).length,
+  rev:act.filter(a=>dStatus(a)==='revision').length,aju:act.filter(a=>dStatus(a)==='ajustes').length,late:act.filter(isLate).length};
+}
+function canEdit(pt,a){const u=person(pt.pid);return u&&u.status==='activo'&&partActive(pt)&&pt.routeApproved&&pt.stages[a.stage]&&a.active&&['sin','borrador','ajustes'].includes(dStatus(a))}
+function currentStage(pt){const en=DIMS.filter(d=>pt.stages[d.k]);return en.length?en[en.length-1]:null}
+function logChange(pt,change,before,after,notice){pt.history.unshift({date:nowTs(),change,before,after,author:'Tiby Hernández'});if(notice)pt.notices.unshift({date:nowTs(),type:change.split(' · ')[0],text:notice})}
+function finalLabel(pt){const f=pt.diag.final;if(f.status==='enviado')return ['Realizado','st-apr'];if(!partActive(pt))return ['No realizado','st-aju'];if(!f.enabled)return ['No habilitado','st-sin'];return f.status==='en_progreso'?['En progreso','st-bor']:['Habilitado','st-rev']}
+
+/* ============================== COMPONENTES ============================== */
+const pill=(t,c)=>`<span class="pill ${c}">${esc(t)}</span>`;
+const stPill=a=>{const s=ST[dStatus(a)];return pill(s[0],s[1])+(isLate(a)?' '+pill('Atrasada','st-late'):'')};
+const brand=(dark,go='home')=>`<button class="brand ${dark?'on-dark':''}" data-go="${go}" aria-label="Mi Expansión, inicio"><span class="b1">Mi Expansión</span><span class="b2">TIBY HERNÁNDEZ</span></button>`;
+const dimBadge=(k,size=34)=>`<span class="dimL" style="background:${DIM[k].bg};color:${DIM[k].fg};width:${size}px;height:${size}px">${k}</span>`;
+function gauge(v){const C=2*Math.PI*62;return `<div class="gauge"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" stroke="rgba(251,248,244,.14)" stroke-width="12" fill="none"/><circle cx="75" cy="75" r="62" stroke="#C1FF72" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="${(v/100)*C} ${C}"/></svg><div class="v"><b class="num">${v}</b><span>de 100</span></div></div>`}
+function tiles(sc,prio){return `<div class="tiles">${DIMS.map(d=>`<div class="tile ${d.k==='D'?'dk':''}" style="background:${d.bg};color:${d.fg};${d.k==='D'?'box-shadow:inset 0 0 0 1px rgba(251,248,244,.25)':''}">${prio.includes(d.k)?'<span class="flag">PRIORIDAD</span>':''}<span class="k">${d.name}</span><span class="n num">${sc[d.k]}</span><span class="lv">${level(sc[d.k])}</span></div>`).join('')}</div>`}
+function dimBars(sc){return `<div class="stack">${DIMS.map(d=>`<div class="dimrow">${dimBadge(d.k)}<span style="font-weight:600">${d.name}</span><div class="bar"><span style="width:${sc[d.k]}%"></span></div><b class="num" style="text-align:right">${sc[d.k]}</b></div>`).join('')}</div>`}
+function empty(t,s){return `<div class="card-soft" style="text-align:center;padding:28px"><p style="font-weight:600">${t}</p>${s?`<p class="muted small" style="margin-top:4px">${s}</p>`:''}</div>`}
+function toast(msg){const t=document.getElementById('toast');t.innerHTML=I('check')+esc(msg);t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+
+/* ============================== VISTAS PÚBLICAS ============================== */
+const V={};
+V.home=()=>{const s=S.site;return `
+<div class="pub-dark">
+ <div class="wrap pubnav">${brand(true)}<button class="btn btn-line-light btn-sm" data-go="login">${I('lock')}Portal de participantes</button></div>
+ <div class="wrap hero fade">
+  <div class="stack-l">
+   <h1>${esc(s.heroTitle)} <em>${esc(s.heroHighlight)}</em></h1>
+   <p class="lead">${esc(s.heroText)}</p>
+   <div class="row"><button class="btn btn-lime" data-go="intro">${esc(s.ctaPrimary)} ${I('arrow')}</button><button class="btn btn-line-light" data-go="login">${esc(s.ctaSecondary)}</button></div>
+  </div>
+  <div class="biocard"><div class="ph">${s.photo?`<img src="${s.photo}" alt="Tiby Hernández">`:`<span class="mono">TH</span>`}</div>
+   <div class="tx"><h3>${esc(s.bioTitle)}</h3><p>${esc(s.bio)}</p></div></div>
+ </div>
+ <div class="freeband"><div class="wrap"><span class="dot">${I('spark')}</span><span><b style="color:var(--cream)">Diagnóstico gratuito</b> · 12 preguntas · sin registro · resultados al instante</span></div></div>
+</div>
+<section class="section"><div class="wrap stack-l">
+ <div class="stack-s" style="max-width:60ch"><span class="eyebrow" style="color:var(--orange-ink)">Para qué sirve</span><h2>${esc(s.diagTitle)}</h2></div>
+ <div class="benefits">
+  <div class="benefit"><span class="ic">${I('chart')}</span><div class="stack-s"><h4>Un mapa de tu negocio</h4><p class="muted">Ves en qué punto están las cuatro dimensiones CODE de tu negocio hoy.</p></div></div>
+  <div class="benefit"><span class="ic">${I('spark')}</span><div class="stack-s"><h4>Tu fortaleza y tu prioridad</h4><p class="muted">Sabes qué ya funciona y qué conviene trabajar primero.</p></div></div>
+  <div class="benefit"><span class="ic">${I('check')}</span><div class="stack-s"><h4>Tres acciones prácticas</h4><p class="muted">Recibes recomendaciones que puedes aplicar esta misma semana.</p></div></div>
+ </div>
+</div></section>
+<section class="section" style="padding-top:0"><div class="wrap stack-l">
+ <div class="row between"><div class="stack-s"><span class="eyebrow" style="color:var(--orange-ink)">La metodología</span><h2>CODE: cuatro dimensiones de tu negocio</h2></div></div>
+ <div class="code-grid">${DIMS.map(d=>`<div class="code-card" style="background:${d.bg};color:${d.fg}"><span class="L">${d.k}</span><h3>${d.name}</h3><p style="font-size:14px;opacity:.85">${esc(s.dims[d.k])}</p></div>`).join('')}</div>
+ <div class="card-dark row between" style="padding:24px"><div class="stack-s"><h3>¿Listo para ver tu punto de partida?</h3><p style="color:var(--on-dark-muted)">Toma unos 5 minutos. No necesitas registrarte.</p></div><button class="btn btn-lime" data-go="intro">Hacer el diagnóstico gratis ${I('arrow')}</button></div>
+</div></section>
+<footer class="footer"><div class="wrap row between"><span>© 2026 Tiby Hernández · Mi Expansión · Metodología CODE</span><button class="link" data-go="login">Acceso para participantes</button></div></footer>`};
+
+function myAttempts(){return S.browser.mine.map(id=>S.attempts.find(a=>a.id===id)).filter(Boolean)}
+function resumable(){return myAttempts().filter(a=>a.status==='incompleto'&&daysSince(a.start)<=7).sort((a,b)=>b.start.localeCompare(a.start))[0]}
+function recoverable(){return myAttempts().filter(a=>a.status==='completado'&&daysSince(a.end)<=30).sort((a,b)=>b.end.localeCompare(a.end))[0]}
+const lightTop=(back='home')=>`<div class="wrap lightbar"><button class="iconbtn" data-go="${back}" aria-label="Volver">${I('back')}</button>${brand(false)}</div>`;
+
+V.intro=()=>{const inc=resumable(),done=recoverable();return `${lightTop()}
+<div class="wrap narrow stack-l fade" style="padding-block:12px 48px">
+ <div class="stack-s"><span class="eyebrow" style="color:var(--orange-ink)">Diagnóstico gratuito CODE</span><h1>Descubre tu punto de partida</h1><p class="muted" style="font-size:16.5px">Antes de empezar, esto es lo que necesitas saber.</p></div>
+ <div class="card infolist">
+  <div class="it"><span class="ic">${I('spark')}</span><div><b>Es gratuito</b><p class="muted small">No tiene costo ni compromiso.</p></div></div>
+  <div class="it"><span class="ic">${I('doc')}</span><div><b>12 preguntas obligatorias</b><p class="muted small">Una por pantalla. Puedes volver atrás y cambiar tus respuestas.</p></div></div>
+  <div class="it"><span class="ic">${I('user')}</span><div><b>No requiere registro</b><p class="muted small">No te pedimos nombre, correo ni teléfono.</p></div></div>
+  <div class="it"><span class="ic">${I('chart')}</span><div><b>Mapa de oportunidades y recomendaciones</b><p class="muted small">Verás tus cuatro dimensiones CODE y tres acciones prácticas.</p></div></div>
+  <div class="it"><span class="ic">${I('shield')}</span><div><b>Respuestas anónimas</b><p class="muted small">Se usan de forma anónima para analizar el diagnóstico.</p></div></div>
+  <div class="it"><span class="ic">${I('clock')}</span><div><b>Puedes retomarlo</b><p class="muted small">Si lo dejas a medias, continúa desde este mismo navegador durante 7 días.</p></div></div>
+ </div>
+ ${inc?`<div class="notice n-lime">${I('clock')}<div class="stack-s" style="flex:1"><b>Tienes un diagnóstico sin terminar</b><span class="small">Respondiste ${Object.keys(inc.answers).length} de 12 preguntas. Puedes continuar hasta el ${fd(new Date(new Date(inc.start).getTime()+7*864e5).toISOString())}.</span><div><button class="btn btn-dark btn-sm" data-act="resume" data-id="${inc.id}">Continuar donde lo dejé ${I('arrow')}</button></div></div></div>`:''}
+ ${done?`<div class="notice n-soft">${I('eye')}<div class="stack-s" style="flex:1"><b>Ya tienes un resultado guardado en este navegador</b><span class="small">Disponible hasta el ${fd(new Date(new Date(done.end).getTime()+30*864e5).toISOString())}.</span><div><button class="btn btn-line btn-sm" data-go="results" data-id="${done.id}">Ver mi resultado</button></div></div></div>`:''}
+ ${S.publicActive?`<button class="btn btn-lime btn-block" data-act="startAttempt">${inc||done?'Empezar un diagnóstico nuevo':'Comenzar diagnóstico'} ${I('arrow')}</button>${inc||done?'<p class="tiny muted" style="text-align:center;margin-top:-16px">Un diagnóstico nuevo es un intento independiente.</p>':''}`
+ :`<div class="notice n-amber">${I('alert')}<div><b>El diagnóstico está en pausa</b><p class="small">Por ahora no se pueden iniciar diagnósticos nuevos. Vuelve pronto.${inc?' Puedes terminar el que ya empezaste.':''}</p></div></div>`}
+</div>`};
+
+V.quiz=()=>{
+ const att=S.attempts.find(a=>a.id===S.browser.current);
+ if(!att||att.status==='completado'){return V.intro()}
+ const qs=pubVersion(att.v).questions;const i=Math.min(att.idx||0,qs.length-1);const q=qs[i];const ans=att.answers[q.id];const last=i===qs.length-1;
+ const missing=qs.filter(x=>att.answers[x.id]===undefined).length;
+ return `${lightTop('intro')}
+<div class="wrap narrow stack-l fade" style="padding-block:4px 40px">
+ <div class="stack-s"><div class="progress"><span style="width:${((i+1)/qs.length)*100}%"></span></div><p class="small muted num" style="text-align:center">Pregunta ${i+1} de ${qs.length}</p></div>
+ <div class="stack-s"><span class="eyebrow" style="color:var(--orange-ink)">${DIM[q.dim].name}</span><h2>${esc(q.text)}</h2></div>
+ <div class="stack-s" role="radiogroup" aria-label="${esc(q.text)}">${q.opts.map((o,j)=>`<button class="opt ${ans===j?'sel':''}" role="radio" aria-checked="${ans===j}" data-act="answer" data-q="${q.id}" data-v="${j}"><span class="rd">${ans===j?I('check'):''}</span>${esc(o)}</button>`).join('')}</div>
+ <div class="quizfoot"><button class="btn btn-line" data-act="qprev" ${i===0?'disabled':''}>Anterior</button>
+ ${last?`<button class="btn btn-lime" data-act="finish" ${ans===undefined?'disabled':''}>Ver mis resultados ${I('arrow')}</button>`:`<button class="btn btn-lime" data-act="qnext" ${ans===undefined?'disabled':''}>Continuar ${I('arrow')}</button>`}</div>
+ ${last&&missing>(ans===undefined?1:0)?`<p class="err">Te faltan ${missing} pregunta(s). Vuelve atrás para responderlas antes de ver tus resultados.</p>`:''}
+ <p class="tiny muted" style="text-align:center">Tus respuestas se guardan en este navegador. Puedes salir y continuar durante 7 días.</p>
+</div>`};
+
+V.results=()=>{
+ const att=S.attempts.find(a=>a.id===UI.params.id);
+ if(!att||att.status!=='completado')return V.intro();
+ const sc=att.scores,res=analyze(sc),recs=att.recs||pickRecs(sc);const msg=waMessage(res.prio);
+ const url=`https://wa.me/${S.site.whatsapp}?text=${encodeURIComponent(msg)}`;
+ const until=fd(new Date(new Date(att.end).getTime()+30*864e5).toISOString());
+ return `<div class="pub-dark"><div class="wrap pubnav">${brand(true)}<button class="btn btn-line-light btn-sm" data-go="login">Soy participante</button></div>
+ <div class="wrap res-top fade"><div class="stack-s"><span class="eyebrow" style="color:var(--lime)">Tu diagnóstico CODE</span><h1>Este es el punto de partida de tu negocio.</h1><p style="color:var(--on-dark-muted)">Puntuación general según tus 12 respuestas.</p></div>${gauge(res.overall)}</div>
+ <div class="wrap">${tiles(sc,res.prio)}</div></div>
+ <div class="wrap narrow stack-l" style="padding-block:32px 56px">
+  <div class="grid2">
+   <div class="card stack-s"><span class="eyebrow muted">Tu principal fortaleza</span><h3>${names(res.strong)}</h3><p class="muted small">${res.strong.map(k=>STRONG_MSG[k]).join(' ')}</p></div>
+   <div class="card stack-s" style="border-color:var(--orange)"><span class="eyebrow" style="color:var(--orange-ink)">${res.prio.length>1?'Tus áreas prioritarias':'Tu principal área de mejora'}</span><h3>${names(res.prio)}</h3><p class="muted small">${res.prio.length>1?'Estas dimensiones empatan con la puntuación más baja.':'Es la dimensión con la puntuación más baja.'}</p></div>
+  </div>
+  <div class="stack-s"><h3>Qué significa tu resultado</h3>${res.prio.map(k=>`<p>${PRIO_MSG[k]}</p>`).join('')}</div>
+  <div class="stack"><h3>Tres acciones para empezar</h3><ol class="recs">${recs.map(r=>`<li><div><b>${esc(r.t)}</b><div class="tiny muted">${DIM[r.k].name}</div></div></li>`).join('')}</ol></div>
+  <div class="card-dark stack"><h3>¿Quieres convertir este mapa en un plan?</h3><p style="color:var(--on-dark-muted)">Conversa con Tiby sobre ${res.prio.length>1?'tus dimensiones prioritarias':'tu dimensión prioritaria'}. Se abrirá WhatsApp con este mensaje y tú decides si lo envías:</p>
+   <div class="ans" style="background:rgba(251,248,244,.08);color:var(--cream)">${esc(msg)}</div>
+   <a class="btn btn-lime" href="${url}" target="_blank" rel="noopener" data-act="waClick" data-keep="1" data-id="${att.id}">${I('wa')}Hablar con Tiby por WhatsApp</a>
+   <p class="tiny" style="color:var(--on-dark-muted)">Número: +${esc(S.site.whatsapp)}</p></div>
+  <p class="small muted">Este resultado queda disponible en este navegador hasta el ${until}. No está asociado a tu identidad. <button class="link" data-go="intro">Hacer un diagnóstico nuevo</button></p>
+ </div>`};
+
+V.login=()=>`<div class="pub-dark"><div class="login">
+ <div class="l wrap" style="position:relative;overflow:hidden">
+  <div class="stack-l" style="max-width:440px">${brand(true)}<h1>Bienvenida a tu espacio de mentoría</h1><p style="color:var(--on-dark-muted)">Aquí construyes tu negocio paso a paso, con la guía de Tiby Hernández.</p>
+  <div class="notice" style="background:rgba(251,248,244,.07);color:var(--cream)">${I('lock')}<span class="small">Este espacio es exclusivo para participantes autorizados por Tiby Hernández. Las cuentas se crean por invitación.</span></div></div>
+ </div>
+ <div class="r"><div class="box wrap">
+  ${UI.params.mode==='forgot'?`<form class="stack" data-form="forgot"><h2>Recupera tu acceso</h2><p class="muted">Escribe el correo con el que recibiste tu invitación.</p><div class="field"><label for="fg-email">Correo electrónico</label><input id="fg-email" type="email" required placeholder="tu@correo.com"></div>
+   ${UI.flash?`<div class="notice n-lime">${I('check')}<span class="small">${esc(UI.flash)}</span></div>`:''}
+   <button class="btn btn-dark" type="submit">Solicitar enlace</button><button type="button" class="link" data-go="login">Volver a ingresar</button></form>`
+  :`<form class="stack" data-form="login"><h2>Ingresa a tu mentoría</h2>
+   <div class="field"><label for="lg-email">Correo electrónico</label><input id="lg-email" type="email" required autocomplete="username" placeholder="tu@correo.com" value="${esc(UI.params.email||'')}"></div>
+   <div class="field"><label for="lg-pass">Contraseña</label><input id="lg-pass" type="password" required autocomplete="current-password" placeholder="Tu contraseña"></div>
+   ${UI.err?`<p class="err" role="alert">${esc(UI.err)}</p>`:''}
+   <button class="btn btn-lime" type="submit">Ingresar a mi mentoría ${I('arrow')}</button>
+   <button type="button" class="link" data-go="login" data-mode="forgot">¿Olvidaste tu contraseña?</button>
+   <div class="card-soft stack-s small"><b>Cuentas de prueba (contraseña demo1234)</b>
+    <span>maria@demo.co · dos mentorías, una activa y una finalizada</span><span>carlos@demo.co · diagnóstico en revisión</span><span>laura@demo.co · cuenta suspendida</span><span>${ADMIN_EMAIL} · Tiby (administración)</span></div>
+   <button type="button" class="link small" data-go="home">← Volver al sitio</button></form>`}
+ </div></div></div></div>`;
+
+V.invite=()=>{const p=S.participants.find(x=>x.inviteToken===UI.params.token);
+ if(!p||p.status!=='invitado')return `${lightTop()}<div class="wrap narrow" style="padding-block:40px">${empty('Esta invitación ya no es válida','Si ya configuraste tu contraseña, ingresa desde el portal de participantes.')}<div style="margin-top:16px"><button class="btn btn-dark" data-go="login">Ir al inicio de sesión</button></div></div>`;
+ const pt=partsOf(p.id)[0];
+ return `${lightTop('login')}<div class="wrap narrow" style="padding-block:12px 48px"><form class="stack-l" data-form="invite" data-id="${p.id}">
+ <div class="stack-s"><span class="eyebrow" style="color:var(--orange-ink)">Invitación</span><h1>Hola, ${esc(p.nombre)}. Activa tu acceso</h1><p class="muted">Tiby Hernández te invitó a <b>${esc(prog(pt?.programId).name)}</b>. Confirma tus datos y crea tu contraseña.</p></div>
+ <div class="card stack"><div class="field"><label>Correo de la invitación</label><input type="email" value="${esc(p.email)}" readonly></div>
+ <div class="field"><label for="iv-p1">Crea tu contraseña</label><input id="iv-p1" type="password" minlength="8" required placeholder="Mínimo 8 caracteres"></div>
+ <div class="field"><label for="iv-p2">Repite la contraseña</label><input id="iv-p2" type="password" minlength="8" required></div>
+ ${UI.err?`<p class="err" role="alert">${esc(UI.err)}</p>`:''}
+ <button class="btn btn-lime" type="submit">Activar e ingresar ${I('arrow')}</button></div>
+ <p class="tiny muted">Esta invitación solo da acceso a la cuenta de ${esc(fullName(p))}.</p></form></div>`};
+
+/* ============================== PARTICIPANTE ============================== */
+const PNAV=[['p-home','Inicio','home'],['p-route','Mi ruta','route'],['p-diagnostico','Diagnóstico','chart'],['p-portfolio','Portafolio','folder'],['p-programs','Mis programas','layers'],['p-profile','Mi perfil','user']];
+const PBOT=[['p-home','Inicio','home'],['p-route','Ruta','route'],['p-diagnostico','Diagnóstico','chart'],['p-portfolio','Portafolio','folder'],['p-profile','Perfil','user']];
+function navActive(v){const map={'p-activity':'p-route','p-diag':'p-diagnostico','p-compare':'p-diagnostico','p-delete':'p-profile'};return map[v]||v}
+function partSelect(){const u=me(),ps=partsOf(u.id),pt=curPart();
+ const act=ps.filter(partActive),fin=ps.filter(x=>!partActive(x));
+ const o=x=>`<option value="${x.id}" ${x.id===pt.id?'selected':''}>${esc(prog(x.programId).name)}</option>`;
+ return `<label class="sr" for="part-sel" style="position:absolute;left:-9999px">Mentoría</label><select id="part-sel" data-change="part">${act.length?`<optgroup label="Activas">${act.map(o).join('')}</optgroup>`:''}${fin.length?`<optgroup label="Finalizadas · consulta">${fin.map(o).join('')}</optgroup>`:''}</select>`}
+function pShell(content){
+ const u=me(),pt=curPart(),cur=navActive(UI.view),pr=progress(pt);
+ return `<div class="shell">
+ <aside class="side">${brand(true,'p-home')}<nav>${PNAV.map(([v,l,ic])=>`<button class="${cur===v?'on':''}" data-go="${v}">${I(ic)}${l}${v==='p-home'&&pr.aju?`<span class="cnt">${pr.aju}</span>`:''}</button>`).join('')}</nav>
+ <div class="who"><b>${esc(fullName(u))}</b><span>${esc(u.email)}</span><button class="btn btn-line-light btn-sm" data-act="logout">${I('out')}Cerrar sesión</button></div></aside>
+ <div class="main">
+  <div class="mobhead"><div class="wrap">${brand(true,'p-home')}<button class="btn btn-line-light btn-sm" data-act="logout" aria-label="Cerrar sesión">${I('out')}</button></div></div>
+  <div class="wrap topbar"><div class="row" style="gap:10px;min-width:0">${partSelect()}${partActive(pt)?pill('Activa','st-ok'):pill('Finalizada · solo consulta','st-sin')}</div><span class="small muted">${fd(pt.start)} – ${fd(pt.end)}</span></div>
+  ${!partActive(pt)?`<div class="wrap" style="padding-top:16px"><div class="notice n-soft">${I('eye')}<span class="small">Esta mentoría finalizó el ${fd(pt.end)}. Estás en modo consulta: puedes revisar tus diagnósticos, resultados y entregables, pero no editar ni enviar trabajos.</span></div></div>`:''}
+  <div class="wrap page fade">${content}</div>
+ </div>
+ <nav class="botnav">${PBOT.map(([v,l,ic])=>`<button class="${cur===v?'on':''}" data-go="${v}">${I(ic)}${l}</button>`).join('')}</nav></div>`}
+
+function aRow(a,pt){const d=DIM[a.stage];const open=pt.routeApproved&&pt.stages[a.stage];
+ return `<button class="li" data-go="p-activity" data-aid="${a.id}">${dimBadge(a.stage,30)}<span class="li-main"><span class="li-t">${esc(a.name)}</span><span class="li-s">${d.name} · ${a.mandatory?'Obligatoria':'Complementaria'}${a.due?' · Entrega '+fd(a.due):''}</span></span>${stPill(a)}</button>`}
+
+V['p-home']=()=>{const u=me(),pt=curPart(),pr=progress(pt),dg=pt.diag.initial,cs=currentStage(pt);
+ const act=pt.assignments.filter(a=>a.active);const open=a=>pt.routeApproved&&pt.stages[a.stage];
+ const aju=act.filter(a=>dStatus(a)==='ajustes'),late=act.filter(a=>isLate(a)&&open(a)),rev=act.filter(a=>dStatus(a)==='revision'),
+  pend=act.filter(a=>open(a)&&['sin','borrador'].includes(dStatus(a))&&!isLate(a));
+ const comments=act.flatMap(a=>a.versions.filter(v=>v.review).map(v=>({a,v}))).sort((x,y)=>y.v.review.date.localeCompare(x.v.review.date)).slice(0,3);
+ let diagCard='';
+ if(!pt.routeApproved){
+  if(['no_iniciado','en_progreso','correccion'].includes(dg.status))diagCard=`<div class="card-dark stack"><span class="eyebrow" style="color:var(--lime)">Primer paso</span><h2>${dg.status==='correccion'?'Tiby autorizó corregir tu diagnóstico':'Completa tu diagnóstico privado'}</h2><p style="color:var(--on-dark-muted)">Con tus respuestas, Tiby diseñará tu ruta CODE personalizada. Se guarda automáticamente y puedes retomarlo cuando quieras.</p><div>${partActive(pt)?`<button class="btn btn-lime" data-go="p-diag">${dg.status==='no_iniciado'?'Comenzar diagnóstico':'Continuar diagnóstico'} ${I('arrow')}</button>`:''}</div></div>`;
+  else diagCard=`<div class="notice n-amber">${I('clock')}<div class="stack-s"><b>Tu diagnóstico está ${dg.status==='validado'?'validado; Tiby está preparando tu ruta':'en revisión'}</b><span class="small">Tus actividades se habilitarán cuando Tiby apruebe tu ruta personalizada. Mientras tanto, puedes ver tu resumen preliminar.</span><div><button class="btn btn-line btn-sm" data-go="p-diagnostico">Ver mi resumen</button></div></div></div>`;
+ }
+ return `<div class="stack-l">
+ <div class="ph-title"><h1>Hola, ${esc(u.nombre)}</h1><p class="muted">${esc(prog(pt.programId).name)}${pt.cohortId?' · '+esc(coh(pt.cohortId)?.name||''):''}</p></div>
+ ${pt.notices.length?`<div class="stack-s">${pt.notices.slice(0,2).map(n=>`<div class="notice n-soft">${I('bell')}<div><span class="tiny muted">Aviso de tu ruta · ${fd(n.date)}</span><p class="small"><b>${esc(n.type)}:</b> ${esc(n.text)}</p></div></div>`).join('')}</div>`:''}
+ ${diagCard}
+ <div class="grid2">
+  <div class="card meter"><span class="eyebrow muted">Progreso oficial</span>
+   ${pr.pct===null?`<span class="big" style="font-size:24px">Pendiente de iniciar</span><p class="small muted">Aún no tienes actividades obligatorias asignadas.</p>`
+   :`<span class="big num">${pr.pct}%</span><div class="progress dark"><span style="width:${pr.pct}%"></span></div><p class="small muted num">${pr.appr} de ${pr.mand} actividades obligatorias <b>aprobadas</b> por Tiby.</p>`}</div>
+  <div class="card meter"><span class="eyebrow muted">Trabajo presentado</span>
+   <span class="big num">${pr.presented}<small> de ${pr.total}</small></span><div class="progress"><span style="width:${pr.total?pr.presented/pr.total*100:0}%"></span></div><p class="small muted">Actividades enviadas a revisión o aprobadas, incluidas las complementarias. <b>Presentado no significa aprobado.</b></p></div>
+ </div>
+ ${pt.routeApproved?`<div class="card row between"><div class="row">${cs?dimBadge(cs.k,44):''}<div><span class="eyebrow muted">Etapa actual</span><h3>${cs?cs.name:'—'}</h3></div></div><button class="btn btn-line btn-sm" data-go="p-route">Ver mi ruta ${I('arrow')}</button></div>`:''}
+ ${aju.length?`<div class="stack-s"><h3>Requieren ajustes <span class="muted">(${aju.length})</span></h3><div class="card" style="padding:4px 18px"><div class="list">${aju.map(a=>aRow(a,pt)).join('')}</div></div></div>`:''}
+ ${late.length?`<div class="stack-s"><h3>Con fecha vencida <span class="muted">(${late.length})</span></h3><p class="small muted">Todavía puedes enviarlas mientras tu mentoría esté activa.</p><div class="card" style="padding:4px 18px"><div class="list">${late.map(a=>aRow(a,pt)).join('')}</div></div></div>`:''}
+ ${pend.length?`<div class="stack-s"><h3>Disponibles y pendientes</h3><div class="card" style="padding:4px 18px"><div class="list">${pend.map(a=>aRow(a,pt)).join('')}</div></div></div>`:''}
+ ${rev.length?`<div class="stack-s"><h3>En revisión de Tiby</h3><div class="card" style="padding:4px 18px"><div class="list">${rev.map(a=>aRow(a,pt)).join('')}</div></div></div>`:''}
+ ${comments.length?`<div class="stack-s"><h3>Comentarios recientes de Tiby</h3><div class="stack-s">${comments.map(({a,v})=>`<button class="card stack-s" style="text-align:left;cursor:pointer" data-go="p-activity" data-aid="${a.id}"><div class="row between"><b>${esc(a.name)}</b><span class="tiny muted">Versión ${v.n} · ${fd(v.review.date)}</span></div><p class="small">«${esc(v.review.general)}»</p></button>`).join('')}</div></div>`:''}
+ ${pt.diag.final.enabled&&pt.diag.final.status!=='enviado'&&partActive(pt)?`<div class="card-dark row between"><div class="stack-s"><span class="eyebrow" style="color:var(--lime)">Cierre de proceso</span><h3>Tu diagnóstico final está habilitado</h3></div><button class="btn btn-lime" data-go="p-diag" data-kind="final">Responder ${I('arrow')}</button></div>`:''}
+ </div>`};
+
+V['p-route']=()=>{const pt=curPart();
+ return `<div class="stack-l"><div class="ph-title"><h1>Mi ruta personalizada</h1><p class="muted">Tu plan de trabajo basado en la metodología CODE de Tiby Hernández.</p></div>
+ ${!pt.routeApproved?`<div class="notice n-amber">${I('lock')}<span class="small">Tu ruta se habilita cuando Tiby valide tu diagnóstico y apruebe tu plan. Puedes ver las cuatro etapas, pero aún no sus actividades.</span></div>`:''}
+ <div class="stack">${DIMS.map((d,i)=>{const open=pt.routeApproved&&pt.stages[d.k];const as=pt.assignments.filter(a=>a.active&&a.stage===d.k);const m=as.filter(a=>a.mandatory);const ap=m.filter(a=>dStatus(a)==='aprobado').length;
+  return `<div class="stage ${open?'':'locked'}"><div class="rail"><span class="num" style="background:${d.bg};color:${d.fg}">${i+1}</span></div>
+  <div class="card stack" style="margin-bottom:8px"><div class="row between"><div class="stack-s"><h3>${d.name}</h3><p class="small muted">${esc(d.desc)}</p></div>${open?pill('Habilitada','st-ok'):pill('Bloqueada','st-lock')}</div>
+   <p class="small"><b>Objetivo:</b> ${esc(d.obj)}</p>
+   ${m.length?`<div class="row small"><div class="progress dark" style="flex:1;min-width:120px"><span style="width:${ap/m.length*100}%"></span></div><span class="num muted">${ap}/${m.length} obligatorias aprobadas</span></div>`:''}
+   ${as.length&&pt.routeApproved?`<div class="stack-s">${as.map(a=>open?`<button class="actrow" data-go="p-activity" data-aid="${a.id}"><span class="li-main"><span class="li-t">${esc(a.name)}</span><span class="li-s">${a.mandatory?'<span class="chip chip-m">Obligatoria</span>':'<span class="chip">Complementaria</span>'} ${a.due?'· Entrega '+fd(a.due):''}</span></span>${stPill(a)}</button>`
+    :`<div class="actrow dis">${I('lock')}<span class="li-main"><span class="li-t">${esc(a.name)}</span><span class="li-s">${a.mandatory?'Obligatoria':'Complementaria'}${a.due?' · Entrega '+fd(a.due):''}</span></span></div>`).join('')}</div>`
+    :`<p class="small muted">${pt.routeApproved?'Sin actividades asignadas en esta etapa.':'Las actividades aparecerán cuando tu ruta sea aprobada.'}</p>`}
+   ${!open&&pt.routeApproved?`<p class="tiny muted">${I('lock')} Tiby habilitará esta etapa cuando sea el momento.</p>`:''}
+  </div></div>`}).join('')}</div></div>`};
+
+function activityAnswers(a){const s=dStatus(a);if(a.draft)return a.draft.answers;if(s==='aprobado')return a.versions.find(v=>v.n===a.approvedVersion).answers;if(a.versions.length)return a.versions[a.versions.length-1].answers;return a.fields.map(()=> '')}
+V['p-activity']=()=>{const pt=curPart();const a=pt.assignments.find(x=>x.id===UI.params.aid);
+ if(!a)return empty('No encontramos esta actividad','Puede pertenecer a otra mentoría. Vuelve a tu ruta.');
+ if(!(pt.routeApproved&&pt.stages[a.stage])&&!a.versions.length)return `<button class="link" data-go="p-route">← Mi ruta</button>${empty('Esta etapa aún está bloqueada','Tiby la habilitará cuando sea el momento.')}`;
+ const s=dStatus(a),ed=canEdit(pt,a),ans=activityAnswers(a);const last=a.versions[a.versions.length-1];const rv=last&&last.review;
+ const showCm=rv&&(s==='ajustes'||s==='aprobado');
+ return `<div class="stack-l">
+ <button class="link small" data-go="p-route" style="align-self:flex-start">← Mi ruta</button>
+ <div class="stack-s"><div class="row">${dimBadge(a.stage,30)}<span class="eyebrow">${DIM[a.stage].name}</span>${a.mandatory?'<span class="chip chip-m">Obligatoria</span>':'<span class="chip">Complementaria</span>'}</div><h1>${esc(a.name)}</h1>
+ <div class="row small">${stPill(a)}${a.due?`<span class="muted">Entrega: ${fd(a.due)}</span>`:''}${!a.active?pill('Retirada de tu ruta','st-sin'):''}</div></div>
+ <div class="card-soft stack-s"><p><b>Objetivo:</b> ${esc(a.purpose)}</p><p class="small"><b>Instrucciones:</b> ${esc(a.instructions)}</p></div>
+ ${rv?`<div class="notice ${rv.decision==='aprobado'?'n-lime':'n-orange'}">${I(rv.decision==='aprobado'?'check':'msg')}<div class="stack-s"><b>${rv.decision==='aprobado'?'Aprobado por Tiby':'Tiby pidió ajustes'} · versión ${last.n} · ${fd(rv.date)}</b><span class="small">Evaluación general: «${esc(rv.general)}»</span>${s==='ajustes'&&ed?'<span class="small">Edita tus respuestas y envía una nueva versión. La anterior se conserva en el historial.</span>':''}${s==='ajustes'&&!ed&&!partActive(pt)?'<span class="small">La mentoría finalizó; para hacer ajustes, Tiby debe ampliar tu fecha.</span>':''}</div></div>`:''}
+ ${s==='revision'?`<div class="notice n-amber">${I('clock')}<span class="small">Enviaste la versión ${last.n} el ${fd(last.sentAt)}. Tiby la está revisando; mientras tanto no se puede editar.</span></div>`:''}
+ ${isLate(a)&&ed?`<div class="notice n-orange">${I('alert')}<span class="small">La fecha de entrega pasó, pero todavía puedes enviar tu trabajo.</span></div>`:''}
+ <div class="stack-l">${a.fields.map((f,i)=>`<div class="qblock"><label class="flabel" for="f-${i}">${i+1}. ${esc(f)}</label>
+  <textarea id="f-${i}" data-bind="act" data-aid="${a.id}" data-f="${i}" ${ed?'':'readonly'} placeholder="${ed?'Escribe tu respuesta…':''}">${esc(ans[i]||'')}</textarea>
+  ${showCm&&rv.comments[i]?`<div class="comment ${s==='aprobado'?'ok':''}">${I('msg')}<span><b>Tiby (v${last.n}):</b> ${esc(rv.comments[i])}</span></div>`:''}</div>`).join('')}</div>
+ ${ed?`<div class="savebar"><span class="savestate" id="savestate">${a.draft?I('check')+'Borrador guardado · '+fd(a.draft.savedAt)+' '+hm(a.draft.savedAt):'Se guarda automáticamente mientras escribes'}</span>
+  <button class="btn btn-line" data-act="saveDraft" data-aid="${a.id}">Guardar borrador</button><button class="btn btn-lime" data-act="openSubmit" data-aid="${a.id}">Enviar a revisión ${I('arrow')}</button></div>
+  ${UI.params.confirm?`<div class="card stack" style="border-color:var(--ink)"><b>¿Enviar la versión ${a.versions.length+1} a revisión?</b><p class="small muted">Mientras Tiby la revisa no podrás editarla.</p>${UI.err?`<p class="err">${esc(UI.err)}</p>`:''}<div class="row"><button class="btn btn-dark" data-act="submitAct" data-aid="${a.id}">Sí, enviar</button><button class="btn btn-line" data-act="cancelSubmit" data-aid="${a.id}">Seguir editando</button></div></div>`:''}`:''}
+ ${a.versions.length?`<div class="stack-s"><h3>Historial de versiones</h3>${[...a.versions].reverse().map(v=>`<details class="ver"><summary><b>Versión ${v.n}</b><span class="small muted">Enviada ${fd(v.sentAt)}${v.review?' · revisada '+fd(v.review.date):''}</span>${v.review?(v.review.decision==='aprobado'?pill('Aprobada','st-apr'):pill('Ajustes pedidos','st-aju')):pill('En revisión','st-rev')}</summary>
+  <div class="body">${a.fields.map((f,i)=>`<div class="stack-s"><span class="small" style="font-weight:600">${esc(f)}</span><div class="ans">${esc(v.answers[i]||'—')}</div>${v.review&&v.review.comments[i]?`<div class="comment ${v.review.decision==='aprobado'?'ok':''}">${I('msg')}<span>${esc(v.review.comments[i])}</span></div>`:''}</div>`).join('')}${v.review?`<p class="small"><b>Evaluación general:</b> ${esc(v.review.general)}</p>`:''}</div></details>`).join('')}</div>`:''}
+ </div>`};
+
+V['p-diagnostico']=()=>{const pt=curPart(),dg=pt.diag.initial;const sent=['enviado','validado','correccion'].includes(dg.status)&&dg.scores;
+ const fl=finalLabel(pt);
+ if(!sent)return `<div class="stack-l"><div class="ph-title"><h1>Mi diagnóstico privado</h1><p class="muted">Este diagnóstico ayuda a Tiby a definir tu ruta personalizada.</p></div>
+  <div class="card-dark stack"><h3>${dg.status==='no_iniciado'?'Aún no has comenzado':'Tienes un diagnóstico en progreso'}</h3><p style="color:var(--on-dark-muted)">4 secciones, una por dimensión CODE. Se guarda automáticamente y puedes retomarlo después.</p><div>${partActive(pt)?`<button class="btn btn-lime" data-go="p-diag">${dg.status==='no_iniciado'?'Comenzar':'Continuar'} ${I('arrow')}</button>`:'<span class="small">No realizado durante la mentoría.</span>'}</div></div></div>`;
+ const res=analyze(dg.scores);
+ return `<div class="stack-l"><div class="ph-title"><h1>Resumen de mi diagnóstico</h1><p class="muted">Diagnóstico inicial · enviado el ${fd(dg.sentAt)} · cuestionario versión ${dg.version}</p></div>
+ <div class="row">${pill(DIAG_ST[dg.status][0],DIAG_ST[dg.status][1])}${dg.validatedAt&&dg.status==='validado'?`<span class="small muted">Validado el ${fd(dg.validatedAt)}</span>`:''}</div>
+ ${dg.status!=='validado'?`<div class="notice n-amber">${I('clock')}<span class="small">Este resumen es preliminar e informativo mientras Tiby revisa tu diagnóstico. Tus actividades comenzarán cuando apruebe tu ruta.</span></div>`:''}
+ ${dg.status==='correccion'&&partActive(pt)?`<div class="notice n-orange">${I('edit')}<div class="stack-s"><b>Tiby autorizó corregir tu diagnóstico</b><span class="small">Tu envío original se conserva. Al reenviar, los resultados se recalculan y vuelven a revisión.</span><div><button class="btn btn-dark btn-sm" data-go="p-diag">Corregir respuestas</button></div></div></div>`:''}
+ <div class="card">${dimBars(dg.scores)}</div>
+ <div class="grid2"><div class="card stack-s"><span class="eyebrow muted">Fortalezas identificadas</span><h3>${names(res.strong)}</h3><p class="small muted">${res.strong.map(k=>STRONG_MSG[k]).join(' ')}</p></div>
+ <div class="card stack-s" style="border-color:var(--orange)"><span class="eyebrow" style="color:var(--orange-ink)">Oportunidades de desarrollo</span><h3>${names(res.prio)}</h3><p class="small muted">${res.prio.map(k=>PRIO_MSG[k]).join(' ')}</p></div></div>
+ ${dg.status==='validado'&&dg.obs?`<div class="card-soft stack-s"><span class="eyebrow">Indicaciones de Tiby</span><p>${esc(dg.obs)}</p></div>`:''}
+ <div class="card stack"><div class="row between"><div class="stack-s"><h3>Diagnóstico final</h3><p class="small muted">Mide tu avance al cierre con las mismas preguntas y puntuación del inicial. Solo Tiby puede habilitarlo.</p></div>${pill(fl[0],fl[1])}</div>
+  <div class="row">${pt.diag.final.enabled&&pt.diag.final.status!=='enviado'&&partActive(pt)?`<button class="btn btn-lime" data-go="p-diag" data-kind="final">${pt.diag.final.status==='en_progreso'?'Continuar':'Responder'} diagnóstico final</button>`:''}${pt.diag.final.status==='enviado'?`<button class="btn btn-dark" data-go="p-compare">Ver comparación inicial y final ${I('arrow')}</button>`:''}</div></div>
+ </div>`};
+
+V['p-diag']=()=>{const pt=curPart();const kind=UI.params.kind==='final'?'final':'initial';const dg=pt.diag[kind];
+ const editable=partActive(pt)&&(kind==='initial'?['no_iniciado','en_progreso','correccion'].includes(dg.status):(dg.enabled&&dg.status!=='enviado'));
+ if(!editable)return V['p-diagnostico']();
+ const ver=privVersion(kind==='final'?pt.diag.initial.version:dg.version)||privVersion(S.privCurrent);
+ const sec=Math.max(0,Math.min(3,+(UI.params.sec||0)));const d=DIMS[sec];const qs=ver.questions.filter(q=>q.dim===d.k);
+ const pending=ver.questions.filter(q=>dg.answers[q.id]===undefined||String(dg.answers[q.id]).trim()==='');
+ return `<div class="stack-l" style="max-width:720px">
+ <div class="ph-title"><span class="eyebrow" style="color:var(--orange-ink)">${kind==='final'?'Diagnóstico final':'Diagnóstico privado inicial'}${dg.status==='correccion'?' · corrección':''}</span><h1>${kind==='final'?'¿Cómo está tu negocio hoy?':'Mi diagnóstico privado'}</h1><p class="muted">${kind==='final'?'Mismas preguntas y puntuación que tu diagnóstico inicial, para comparar tu avance.':'Este diagnóstico te ayudará a definir tu ruta personalizada.'}</p></div>
+ <div class="stack-s"><div class="progress"><span style="width:${(sec+1)/4*100}%"></span></div><div class="row between small"><span class="muted num">Sección ${sec+1} de 4</span><span class="savestate" id="savestate">${I('check')}Se guarda automáticamente</span></div></div>
+ <h2 style="color:var(--orange-ink)">${PRIV_SECTIONS[d.k]}</h2>
+ ${qs.map(q=>`<div class="qblock"><span class="flabel">${esc(q.text)}</span>${q.type==='scale'?`<div class="scale" role="radiogroup" aria-label="${esc(q.text)}">${[1,2,3,4,5].map(n=>`<button class="${+dg.answers[q.id]===n?'sel':''}" role="radio" aria-checked="${+dg.answers[q.id]===n}" data-act="scale" data-kind="${kind}" data-q="${q.id}" data-v="${n}"><b>${n}</b><span>${SCALE_L[n-1]}</span></button>`).join('')}</div>`
+  :`<textarea id="dq-${q.id}" data-bind="diag" data-kind="${kind}" data-q="${q.id}" maxlength="500" placeholder="${esc(q.ph||'')}">${esc(dg.answers[q.id]||'')}</textarea><span class="tiny muted" style="text-align:right" id="cnt-${q.id}">${String(dg.answers[q.id]||'').length}/500</span>`}</div>`).join('')}
+ <div class="quizfoot"><button class="btn btn-line" data-go="p-diag" data-kind="${kind}" data-sec="${sec-1}" ${sec===0?'disabled':''}>${I('back')}Anterior</button>
+ ${sec<3?`<button class="btn btn-lime" data-go="p-diag" data-kind="${kind}" data-sec="${sec+1}">Continuar ${I('arrow')}</button>`:`<button class="btn btn-lime" data-act="sendDiag" data-kind="${kind}">${dg.status==='correccion'?'Reenviar diagnóstico':'Enviar diagnóstico'} ${I('arrow')}</button>`}</div>
+ ${sec===3&&UI.err?`<p class="err">${esc(UI.err)}</p>`:''}
+ ${sec===3&&pending.length?`<p class="small muted">Pendientes: ${pending.length} pregunta(s) en ${[...new Set(pending.map(q=>DIM[q.dim].name))].join(', ')}. Todas son obligatorias.</p>`:''}
+ </div>`};
+
+V['p-compare']=()=>{const pt=curPart(),i=pt.diag.initial,f=pt.diag.final;
+ if(f.status!=='enviado'||!f.scores){const fl=finalLabel(pt);return `<div class="stack-l"><h1>Comparación de resultados</h1><div class="row">${pill('Diagnóstico final: '+fl[0],fl[1])}</div>${empty('Todavía no hay una comparación','La comparación aparece solo cuando el diagnóstico final está completo.')}</div>`}
+ return `<div class="stack-l"><div class="ph-title"><h1>Tu evolución CODE</h1><p class="muted">Inicial (${fd(i.sentAt)}) frente a final (${fd(f.sentAt)}) · misma versión del cuestionario (v${i.version}).</p></div>
+ <div class="card stack"><div class="legend"><span><i style="background:var(--soft2)"></i>Inicial</span><span><i style="background:var(--ink)"></i>Final</span></div>
+ ${DIMS.map(d=>{const df=f.scores[d.k]-i.scores[d.k];return `<div class="cmp"><span class="row" style="gap:8px">${dimBadge(d.k,28)}<b>${d.name}</b></span><div class="bars"><div class="bar"><span style="width:${i.scores[d.k]}%;background:var(--soft2);box-shadow:inset 0 0 0 1px var(--line2)"></span></div><div class="bar"><span style="width:${f.scores[d.k]}%"></span></div></div><b class="num" style="text-align:right;color:${df>0?'var(--lime-ink)':df<0?'var(--orange-ink)':'var(--muted)'}">${df>0?'+':''}${df}</b></div>`}).join('')}
+ </div><div class="grid4">${DIMS.map(d=>`<div class="kpi"><span>${d.name}</span><b class="num">${i.scores[d.k]} → ${f.scores[d.k]}</b></div>`).join('')}</div></div>`};
+
+V['p-portfolio']=()=>{const pt=curPart();const items=pt.assignments.filter(a=>a.approvedVersion);const mode=UI.params.mode||'etapa';
+ const card=a=>{const v=a.versions.find(x=>x.n===a.approvedVersion);return `<details class="ver"><summary>${dimBadge(a.stage,28)}<b style="flex:1;min-width:0">${esc(a.name)}</b><span class="tiny muted">Aprobado ${fd(a.approvedAt)} · v${v.n}</span></summary><div class="body">${a.fields.map((f,i)=>`<div class="stack-s"><span class="small" style="font-weight:600">${esc(f)}</span><div class="ans">${esc(v.answers[i]||'—')}</div></div>`).join('')}</div></details>`};
+ return `<div class="stack-l"><div class="ph-title"><h1>Mi portafolio de negocio</h1><p class="muted">Las versiones aprobadas de los componentes que construiste en ${esc(prog(pt.programId).name)}.</p></div>
+ <div class="row"><button class="btn btn-sm ${mode==='etapa'?'btn-dark':'btn-line'}" data-go="p-portfolio" data-mode="etapa">Por etapa</button><button class="btn btn-sm ${mode==='general'?'btn-dark':'btn-line'}" data-go="p-portfolio" data-mode="general">Vista general</button><span class="small muted">${items.length} entregable(s) aprobado(s)</span></div>
+ ${!items.length?empty('Tu portafolio está vacío por ahora','Aquí aparecerá cada entregable cuando Tiby lo apruebe.'):
+ mode==='general'?`<div class="stack-s">${items.map(card).join('')}</div>`:
+ DIMS.map(d=>{const it=items.filter(a=>a.stage===d.k);return `<div class="stack-s"><div class="row">${dimBadge(d.k)}<h3>${d.name}</h3><span class="small muted">${it.length}</span></div>${it.length?it.map(card).join(''):'<p class="small muted">Sin entregables aprobados en esta etapa.</p>'}</div>`}).join('')}
+ <p class="tiny muted">Consulta de solo lectura. Ver el portafolio no modifica tus entregables.</p></div>`};
+
+V['p-programs']=()=>{const u=me(),ps=partsOf(u.id);
+ const row=pt=>{const pr=progress(pt);return `<div class="card stack-s"><div class="row between"><h3>${esc(prog(pt.programId).name)}</h3>${partActive(pt)?pill('Activa','st-ok'):pill('Finalizada · consulta','st-sin')}</div>
+ <p class="small muted">${fd(pt.start)} – ${fd(pt.end)}${pt.cohortId?' · '+esc(coh(pt.cohortId)?.name||''):''}</p>
+ <p class="small">Progreso oficial: <b>${pr.pct===null?'Pendiente de iniciar':pr.pct+'%'}</b> · Trabajo presentado: <b>${pr.presented} de ${pr.total}</b> · Diagnóstico final: <b>${finalLabel(pt)[0]}</b></p>
+ <div class="row"><button class="btn btn-dark btn-sm" data-act="openPart" data-id="${pt.id}">Abrir ${I('arrow')}</button><button class="btn btn-line btn-sm" data-act="openPart" data-id="${pt.id}" data-to="p-portfolio">Portafolio</button></div></div>`};
+ return `<div class="stack-l"><div class="ph-title"><h1>Mis programas</h1><p class="muted">Cada mentoría tiene sus propios diagnósticos, ruta, actividades y resultados.</p></div>
+ <div class="stack-s"><h3>Activos</h3>${ps.filter(partActive).map(row).join('')||'<p class="muted small">No tienes programas activos.</p>'}</div>
+ <div class="stack-s"><h3>Finalizados</h3>${ps.filter(x=>!partActive(x)).map(row).join('')||'<p class="muted small">Aún no tienes programas finalizados.</p>'}</div></div>`};
+
+V['p-profile']=()=>{const u=me(),pt=curPart();const f=(id,l,type='text')=>`<div class="field"><label for="pf-${id}">${l}</label><input id="pf-${id}" name="${id}" type="${type}" value="${esc(u[id]||'')}"></div>`;
+ const t=(id,l)=>`<div class="field"><label for="pf-${id}">${l}</label><textarea id="pf-${id}" name="${id}" style="min-height:80px">${esc(u[id]||'')}</textarea></div>`;
+ return `<div class="stack-l" style="max-width:820px"><div class="ph-title"><h1>Mi perfil</h1><p class="muted">Mantén actualizada tu información personal, profesional y de negocio.</p></div>
+ <form class="stack-l" data-form="profile">
+ <div class="card stack"><h3>Datos personales</h3><div class="grid2">${f('nombre','Nombres')}${f('apellido','Apellidos')}${f('email','Correo electrónico','email')}${f('tel','Teléfono','tel')}${f('pais','País')}</div></div>
+ <div class="card stack"><h3>Perfil profesional</h3><div class="grid2">${f('profesion','Profesión o especialidad')}${f('organizacion','Organización o empresa')}</div>${t('experiencia','Experiencia profesional')}</div>
+ <div class="card stack"><h3>Tu negocio</h3><div class="grid2">${f('negocio','Nombre del negocio')}${f('actividad','Actividad económica o profesional')}</div>${t('servicios','Servicios actuales')}${t('clientes','Clientes o públicos atendidos')}${t('objetivos','Objetivos y prioridades')}</div>
+ <div><button class="btn btn-lime" type="submit">Guardar cambios</button></div></form>
+ <div class="card-soft stack-s"><h3>Datos administrados por Tiby</h3><p class="small muted">Para cambiarlos, consulta con tu mentora.</p><div class="grid2 small"><span>Programa: <b>${esc(prog(pt.programId).name)}</b></span><span>Cohorte: <b>${esc(coh(pt.cohortId)?.name||'Individual')}</b></span><span>Fechas: <b>${fd(pt.start)} – ${fd(pt.end)}</b></span><span>Acceso: <b>${u.status==='activo'?'Activo':u.status}</b></span></div></div>
+ <div class="row"><button class="link small" data-go="p-programs">Ver todos mis programas</button><span class="muted">·</span><button class="link small" data-go="p-delete">Solicitar eliminación de mi cuenta</button></div></div>`};
+
+V['p-delete']=()=>{const u=me();const req=S.deletions.find(r=>r.pid===u.id&&r.status!=='Cerrada');
+ return `<div class="stack-l" style="max-width:640px"><button class="link small" data-go="p-profile" style="align-self:flex-start">← Mi perfil</button><div class="ph-title"><h1>Eliminación de cuenta y datos</h1><p class="muted">Puedes solicitar que se elimine tu cuenta y tu información personal.</p></div>
+ <div class="card-soft stack-s small"><b>Cómo funciona</b><span>1. Envías la solicitud. No se elimina nada de inmediato.</span><span>2. Se verifica tu identidad.</span><span>3. Tiby revisa qué información debe conservarse por obligaciones legales.</span><span>4. La eliminación definitiva requiere una confirmación final.</span></div>
+ ${req?`<div class="notice n-amber">${I('clock')}<div><b>Solicitud en trámite · ${esc(req.status)}</b><p class="small">Enviada el ${fd(req.date)}. Tu cuenta sigue activa mientras se revisa.</p></div></div>`:
+ `<form class="card stack" data-form="delreq"><div class="field"><label for="dr-why">Motivo (opcional)</label><textarea id="dr-why" style="min-height:80px"></textarea></div><label class="check"><input type="checkbox" id="dr-ok" required>Entiendo que la solicitud será verificada y que cierta información podría conservarse por obligaciones legales.</label><div><button class="btn btn-dark" type="submit">Enviar solicitud</button></div></form>`}</div>`};
+
+/* ============================== ADMINISTRACIÓN ============================== */
+const ANAV=[['a-home','Panel','home'],['a-people','Participantes','users'],['a-programs','Programas y cohortes','layers'],['a-reviews','Revisiones','inbox'],['a-library','Biblioteca CODE','book'],['a-diags','Cuestionarios','doc'],['a-stats','Estadísticas públicas','chart'],['a-site','Sitio público','globe'],['a-deletions','Solicitudes','shield']];
+function aNavActive(v){return {'a-review-diag':'a-reviews','a-review':'a-reviews','a-route':'a-people','a-track':'a-people'}[v]||v}
+function pendingCounts(){const diags=S.participations.filter(p=>p.diag.initial.status==='enviado').length;const dels=S.participations.flatMap(p=>p.assignments.filter(a=>dStatus(a)==='revision')).length;return {diags,dels,req:S.deletions.filter(r=>r.status!=='Cerrada').length}}
+function aShell(content){const cur=aNavActive(UI.view),pc=pendingCounts();
+ const cnt=v=>v==='a-reviews'&&(pc.diags+pc.dels)?`<span class="cnt">${pc.diags+pc.dels}</span>`:v==='a-deletions'&&pc.req?`<span class="cnt">${pc.req}</span>`:'';
+ return `<div class="shell"><aside class="side">${brand(true,'a-home')}<span class="eyebrow" style="color:var(--on-dark-muted);padding-left:12px">Administración</span>
+ <nav>${ANAV.map(([v,l,ic])=>`<button class="${cur===v?'on':''}" data-go="${v}">${I(ic)}${l}${cnt(v)}</button>`).join('')}</nav>
+ <div class="who"><b>Tiby Hernández</b><span>Mentora y administradora</span><button class="btn btn-line-light btn-sm" data-act="logout">${I('out')}Cerrar sesión</button></div></aside>
+ <div class="main"><div class="mobhead"><div class="wrap">${brand(true,'a-home')}<button class="btn btn-line-light btn-sm" data-act="logout" aria-label="Cerrar sesión">${I('out')}</button></div></div>
+ <div class="tabnav"><div class="wrap">${ANAV.map(([v,l])=>`<button class="${cur===v?'on':''}" data-go="${v}">${l}</button>`).join('')}</div></div>
+ <div class="wrap page fade">${content}</div></div></div>`}
+const aHead=(t,s,right='')=>`<div class="row between" style="align-items:flex-end"><div class="ph-title"><h1>${t}</h1>${s?`<p class="muted">${s}</p>`:''}</div>${right}</div>`;
+function personState(p){if(p.status==='suspendido')return ['Suspendido','st-aju'];if(p.status==='invitado')return ['Invitación pendiente','st-rev'];if(p.status==='eliminado')return ['Eliminado','st-sin'];return partsOf(p.id).some(partActive)?['Activo','st-ok']:['Finalizado','st-sin']}
+
+V['a-home']=()=>{const ppl=S.participants.filter(p=>p.status!=='eliminado');const st=ppl.map(personState);
+ const count=l=>st.filter(s=>s[0]===l).length;
+ const dq=S.participations.filter(p=>p.diag.initial.status==='enviado');
+ const rv=S.participations.flatMap(pt=>pt.assignments.filter(a=>dStatus(a)==='revision').map(a=>({pt,a})));
+ const aj=S.participations.flatMap(pt=>pt.assignments.filter(a=>dStatus(a)==='ajustes'&&a.active).map(a=>({pt,a})));
+ const actP=S.participations.filter(pt=>partActive(pt)&&person(pt.pid)?.status!=='eliminado');
+ const done=S.attempts.filter(a=>a.status==='completado').length;
+ return `<div class="stack-l">${aHead('Hola, Tiby','Esto es lo que necesita tu atención hoy.',`<div class="row">${S.publicActive?pill('Diagnóstico público activo','st-ok'):pill('Diagnóstico público en pausa','st-aju')}</div>`)}
+ <div class="kpis"><div class="kpi"><b class="num">${count('Activo')}</b><span>Participantes activos</span></div><div class="kpi"><b class="num">${count('Finalizado')}</b><span>Finalizados</span></div><div class="kpi"><b class="num">${count('Suspendido')}</b><span>Suspendidos</span></div><div class="kpi"><b class="num">${count('Invitación pendiente')}</b><span>Invitaciones pendientes</span></div><div class="kpi"><b class="num">${S.programs.length} · ${S.cohorts.length}</b><span>Programas · cohortes</span></div></div>
+ <div class="grid2">
+  <div class="card stack-s"><div class="row between"><h3>Diagnósticos por validar</h3>${pill(dq.length,'st-rev')}</div>${dq.length?`<div class="list">${dq.map(pt=>`<button class="li" data-go="a-review-diag" data-id="${pt.id}"><span class="li-main"><span class="li-t">${esc(fullName(person(pt.pid)))}</span><span class="li-s">${esc(prog(pt.programId).name)} · enviado ${fd(pt.diag.initial.sentAt)}</span></span>${I('arrow')}</button>`).join('')}</div>`:'<p class="small muted">Nada pendiente.</p>'}</div>
+  <div class="card stack-s"><div class="row between"><h3>Entregables en revisión</h3>${pill(rv.length,'st-rev')}</div>${rv.length?`<div class="list">${rv.map(({pt,a})=>`<button class="li" data-go="a-review" data-id="${pt.id}" data-aid="${a.id}">${dimBadge(a.stage,28)}<span class="li-main"><span class="li-t">${esc(a.name)}</span><span class="li-s">${esc(fullName(person(pt.pid)))} · v${a.versions.length} · ${fd(a.versions[a.versions.length-1].sentAt)}${person(pt.pid).status==='suspendido'?' · cuenta suspendida':''}</span></span>${I('arrow')}</button>`).join('')}</div>`:'<p class="small muted">Nada pendiente.</p>'}</div>
+ </div>
+ <div class="card stack-s"><div class="row between"><h3>Esperando ajustes del participante</h3>${pill(aj.length,'st-aju')}</div>${aj.length?`<div class="list">${aj.map(({pt,a})=>`<button class="li" data-go="a-track" data-id="${pt.id}"><span class="li-main"><span class="li-t">${esc(a.name)}</span><span class="li-s">${esc(fullName(person(pt.pid)))} · ${esc(prog(pt.programId).name)}${partActive(pt)?'':' · mentoría finalizada'}</span></span>${pill('Requiere ajustes','st-aju')}</button>`).join('')}</div>`:'<p class="small muted">Ninguno.</p>'}</div>
+ <div class="card stack"><h3>Progreso de participantes activos</h3>${actP.length?`<div class="tbl-wrap" style="border:0"><table><thead><tr><th>Participante</th><th>Programa</th><th>Progreso oficial</th><th>Presentado</th><th></th></tr></thead><tbody>${actP.map(pt=>{const pr=progress(pt);return `<tr><td><b>${esc(fullName(person(pt.pid)))}</b></td><td class="small">${esc(prog(pt.programId).name)}</td><td style="min-width:160px">${pr.pct===null?'<span class="small muted">Pendiente de iniciar</span>':`<div class="row" style="gap:8px;flex-wrap:nowrap"><div class="progress dark" style="flex:1"><span style="width:${pr.pct}%"></span></div><span class="num small">${pr.pct}%</span></div>`}</td><td class="num small">${pr.presented}/${pr.total}</td><td><button class="btn btn-line btn-sm" data-go="a-track" data-id="${pt.id}">Seguimiento</button></td></tr>`}).join('')}</tbody></table></div>`:'<p class="small muted">No hay participaciones activas.</p>'}</div>
+ <div class="grid3"><button class="card stack-s" style="text-align:left;cursor:pointer" data-go="a-stats">${I('chart')}<b>Estadísticas públicas</b><span class="small muted num">${done} diagnósticos completados</span></button><button class="card stack-s" style="text-align:left;cursor:pointer" data-go="a-library">${I('book')}<b>Biblioteca de actividades</b><span class="small muted">${S.library.filter(l=>l.active).length} activas</span></button><button class="card stack-s" style="text-align:left;cursor:pointer" data-go="a-site">${I('globe')}<b>Editar sitio público</b><span class="small muted">Textos, imagen y WhatsApp</span></button></div>
+ </div>`};
+
+V['a-people']=()=>{const ppl=S.participants.filter(p=>p.status!=='eliminado');const show=UI.params.new==='1';
+ return `<div class="stack-l">${aHead('Participantes','Las cuentas solo se crean por invitación.',`<button class="btn btn-lime" data-go="a-people" data-new="${show?'0':'1'}">${I('plus')}Nuevo participante</button>`)}
+ ${show?`<form class="card stack" data-form="newPerson"><h3>Crear participante e invitar</h3><div class="grid2">
+  <div class="field"><label for="np-n">Nombres</label><input id="np-n" required></div><div class="field"><label for="np-a">Apellidos</label><input id="np-a" required></div>
+  <div class="field"><label for="np-e">Correo</label><input id="np-e" type="email" required></div>
+  <div class="field"><label for="np-p">Programa</label><select id="np-p">${S.programs.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></div>
+  <div class="field"><label for="np-c">Cohorte</label><select id="np-c"><option value="">Individual (sin cohorte)</option>${S.cohorts.map(c=>`<option value="${c.id}">${esc(prog(c.programId).name)} · ${esc(c.name)}</option>`).join('')}</select></div>
+  <div class="field"><label for="np-s">Inicio</label><input id="np-s" type="date" value="${todayISO()}"></div>
+  <div class="field"><label for="np-d">Duración (días)</label><input id="np-d" type="number" min="1" value="90"></div></div>
+  ${UI.err?`<p class="err">${esc(UI.err)}</p>`:''}<div class="row"><button class="btn btn-dark" type="submit">Crear y generar invitación</button><span class="small muted">En la versión final se enviará un correo de invitación seguro.</span></div></form>`:''}
+ <div class="tbl-wrap"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Estado</th><th>Programas</th><th>Acciones</th></tr></thead><tbody>
+ ${ppl.map(p=>{const s=personState(p),ps=partsOf(p.id);return `<tr><td><b>${esc(fullName(p))}</b><div class="tiny muted">${esc(p.profesion||'')}</div></td><td class="small">${esc(p.email)}</td><td>${pill(s[0],s[1])}</td><td class="small">${ps.map(x=>esc(prog(x.programId).name)+(partActive(x)?'':' (finalizado)')).join('<br>')}</td>
+ <td><div class="row" style="gap:6px;flex-wrap:nowrap">${ps[0]?`<button class="btn btn-line btn-sm" data-go="a-track" data-id="${ps.filter(partActive)[0]?.id||ps[0].id}">Seguimiento</button>`:''}
+ ${p.status==='invitado'?`<button class="btn btn-line btn-sm" data-go="invite" data-token="${p.inviteToken}" title="Simula el enlace que recibe la persona">Ver invitación</button>`:''}
+ ${p.status==='activo'?`<button class="btn btn-line btn-sm" data-act="suspend" data-id="${p.id}">Suspender</button>`:''}${p.status==='suspendido'?`<button class="btn btn-dark btn-sm" data-act="reactivate" data-id="${p.id}">Reactivar</button>`:''}</div></td></tr>`}).join('')}
+ </tbody></table></div><p class="tiny muted">Suspender quita el acceso al portal pero conserva perfil, diagnósticos, entregables e historial. Puedes seguir revisando sus trabajos pendientes.</p></div>`};
+
+V['a-programs']=()=>`<div class="stack-l">${aHead('Programas y cohortes','Referencia: 90 días para mentorías grupales. Las fechas se pueden ajustar por participante.')}
+ ${S.programs.map(p=>{const cs=S.cohorts.filter(c=>c.programId===p.id);const pts=S.participations.filter(x=>x.programId===p.id);return `<div class="card stack"><div class="row between"><div class="stack-s"><h3>${esc(p.name)}</h3><p class="small muted">${esc(p.desc)}</p></div>${pill(p.status==='activo'?'Activo':'Cerrado',p.status==='activo'?'st-ok':'st-sin')}</div>
+ <p class="small">Fechas: <b>${fd(p.start)} – ${fd(p.end)}</b> · ${pts.length} participación(es)</p>
+ ${cs.length?`<div class="tbl-wrap"><table><thead><tr><th>Cohorte</th><th>Fechas comunes</th><th>Participantes</th></tr></thead><tbody>${cs.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td class="small">${fd(c.start)} – ${fd(c.end)}</td><td class="small">${pts.filter(x=>x.cohortId===c.id).map(x=>`<button class="link" data-go="a-track" data-id="${x.id}">${esc(fullName(person(x.pid)))}</button>`).join(', ')||'—'}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small muted">Sin cohortes: participaciones individuales.</p>'}</div>`}).join('')}
+ <div class="grid2"><form class="card stack" data-form="newProgram"><h3>Nuevo programa</h3><div class="field"><label for="pg-n">Nombre</label><input id="pg-n" required></div><div class="field"><label for="pg-d">Descripción</label><textarea id="pg-d" style="min-height:70px"></textarea></div><div class="grid2"><div class="field"><label for="pg-s">Inicio</label><input id="pg-s" type="date" value="${todayISO()}" required></div><div class="field"><label for="pg-e">Fin previsto</label><input id="pg-e" type="date" value="${addDays(todayISO(),90)}" required></div></div><div><button class="btn btn-dark" type="submit">Crear programa</button></div></form>
+ <form class="card stack" data-form="newCohort"><h3>Nueva cohorte</h3><div class="field"><label for="ch-p">Programa</label><select id="ch-p">${S.programs.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></div><div class="field"><label for="ch-n">Nombre del grupo</label><input id="ch-n" required placeholder="Ej.: Cohorte Febrero 2027"></div><div class="grid2"><div class="field"><label for="ch-s">Inicio</label><input id="ch-s" type="date" value="${todayISO()}" required></div><div class="field"><label for="ch-e">Fin</label><input id="ch-e" type="date" value="${addDays(todayISO(),90)}" required></div></div><div><button class="btn btn-dark" type="submit">Crear cohorte</button></div></form></div>
+ <p class="tiny muted">Una cohorte organiza la mentoría; no comparte los trabajos privados entre sus integrantes.</p></div>`;
+
+V['a-reviews']=()=>{const dq=S.participations.filter(p=>['enviado','correccion'].includes(p.diag.initial.status));const rv=S.participations.flatMap(pt=>pt.assignments.filter(a=>dStatus(a)==='revision').map(a=>({pt,a})));
+ return `<div class="stack-l">${aHead('Revisiones','Diagnósticos privados y entregables enviados.')}
+ <div class="stack-s"><h3>Diagnósticos privados</h3><div class="tbl-wrap"><table><thead><tr><th>Participante</th><th>Programa</th><th>Estado</th><th>Enviado</th><th></th></tr></thead><tbody>${S.participations.filter(p=>p.diag.initial.status!=='no_iniciado').map(pt=>{const d=pt.diag.initial;return `<tr><td><b>${esc(fullName(person(pt.pid)))}</b></td><td class="small">${esc(prog(pt.programId).name)}</td><td>${pill(DIAG_ST[d.status][0],DIAG_ST[d.status][1])}</td><td class="small">${fd(d.sentAt)}</td><td><button class="btn ${d.status==='enviado'?'btn-dark':'btn-line'} btn-sm" data-go="a-review-diag" data-id="${pt.id}">${d.status==='enviado'?'Revisar':'Ver'}</button></td></tr>`}).join('')}</tbody></table></div></div>
+ <div class="stack-s"><h3>Entregables en revisión <span class="muted">(${rv.length})</span></h3>${rv.length?`<div class="tbl-wrap"><table><thead><tr><th>Actividad</th><th>Participante</th><th>Versión</th><th>Enviado</th><th></th></tr></thead><tbody>${rv.map(({pt,a})=>`<tr><td><div class="row" style="gap:8px;flex-wrap:nowrap">${dimBadge(a.stage,26)}<b>${esc(a.name)}</b></div></td><td class="small">${esc(fullName(person(pt.pid)))}${person(pt.pid).status==='suspendido'?' · '+pill('Suspendida','st-aju'):''}</td><td class="num small">v${a.versions.length}</td><td class="small">${fd(a.versions[a.versions.length-1].sentAt)}</td><td><button class="btn btn-dark btn-sm" data-go="a-review" data-id="${pt.id}" data-aid="${a.id}">Revisar</button></td></tr>`).join('')}</tbody></table></div>`:empty('No hay entregables esperando revisión')}</div></div>`};
+
+V['a-review-diag']=()=>{const pt=part(UI.params.id);if(!pt)return empty('No encontrado');const d=pt.diag.initial,p=person(pt.pid);const ver=privVersion(d.version);
+ const started=pt.routeApproved&&pt.assignments.some(a=>a.versions.length||a.draft);
+ return `<div class="stack-l"><button class="link small" data-go="a-reviews" style="align-self:flex-start">← Revisiones</button>
+ ${aHead('Diagnóstico de '+esc(fullName(p)),`${esc(prog(pt.programId).name)} · cuestionario v${d.version} · enviado ${fd(d.sentAt)}`,pill(DIAG_ST[d.status][0],DIAG_ST[d.status][1]))}
+ ${d.corrections.length&&started?`<div class="notice n-amber">${I('alert')}<span class="small">Este diagnóstico se corrigió después de iniciar la mentoría. Todo el trabajo se conserva; revisa manualmente si la ruta necesita ajustes.</span></div>`:''}
+ ${d.scores?`<div class="card">${dimBars(d.scores)}</div>`:''}
+ <div class="card stack"><h3>Respuestas</h3>${DIMS.map(dm=>`<div class="stack-s"><span class="eyebrow" style="color:var(--orange-ink)">${PRIV_SECTIONS[dm.k]}</span>${ver.questions.filter(q=>q.dim===dm.k).map(q=>`<div class="row between small" style="align-items:flex-start;flex-wrap:nowrap;gap:16px"><span style="flex:1">${esc(q.text)}</span><b style="max-width:55%;text-align:right">${q.type==='scale'?(d.answers[q.id]?d.answers[q.id]+' · '+SCALE_L[d.answers[q.id]-1]:'—'):esc(d.answers[q.id]||'—')}</b></div>`).join('')}</div>`).join('<hr class="sep">')}</div>
+ ${d.corrections.length?`<div class="card stack-s"><h3>Correcciones registradas</h3>${d.corrections.map((c,i)=>`<details class="ver"><summary><b>Corrección ${i+1}</b><span class="small muted">Autorizada ${fd(c.authorizedAt)}${c.resentAt?' · reenviada '+fd(c.resentAt):' · pendiente de reenvío'}</span></summary><div class="body small">${DIMS.map(dm=>`<span>${dm.name}: ${c.prevScores[dm.k]} → ${c.newScores?c.newScores[dm.k]:'…'}</span>`).join('')}<span class="muted">Respuestas originales conservadas (${Object.keys(c.prevAnswers).length} respuestas).</span></div></details>`).join('')}</div>`:''}
+ <form class="card stack" data-form="diagObs" data-id="${pt.id}"><h3>Observaciones de la mentora</h3><textarea id="obs" placeholder="Indicaciones generales que verá el participante al validar…">${esc(d.obs)}</textarea>
+ <div class="row"><button class="btn btn-line" type="submit">Guardar observaciones</button>${d.status==='enviado'?`<button class="btn btn-lime" type="button" data-act="validateDiag" data-id="${pt.id}">${I('check')}Validar diagnóstico</button>`:''}${['enviado','validado'].includes(d.status)&&partActive(pt)?`<button class="btn btn-line" type="button" data-act="allowCorrection" data-id="${pt.id}">Autorizar corrección</button>`:''}</div></form>
+ ${d.status==='validado'?`<div class="card-dark row between"><div class="stack-s"><h3>${pt.routeApproved?'Ruta aprobada':'Siguiente paso: diseñar la ruta'}</h3><p style="color:var(--on-dark-muted)" class="small">${pt.routeApproved?'Puedes modificar actividades, fechas y etapas.':'Selecciona actividades por etapa y aprueba la ruta.'}</p></div><button class="btn btn-lime" data-go="a-route" data-id="${pt.id}">${pt.routeApproved?'Editar ruta':'Diseñar ruta'} ${I('arrow')}</button></div>`:''}
+ </div>`};
+
+V['a-route']=()=>{const pt=part(UI.params.id);if(!pt)return empty('No encontrado');const p=person(pt.pid);const dv=pt.diag.initial.status==='validado';
+ return `<div class="stack-l"><button class="link small" data-go="a-track" data-id="${pt.id}" style="align-self:flex-start">← Seguimiento de ${esc(p.nombre)}</button>
+ ${aHead('Ruta de '+esc(fullName(p)),esc(prog(pt.programId).name)+(pt.diag.initial.scores?' · prioridades del diagnóstico: '+names(analyze(pt.diag.initial.scores).prio):''),pt.routeApproved?pill('Ruta aprobada','st-apr'):pill('Ruta en diseño','st-rev'))}
+ ${!pt.routeApproved?`<div class="notice n-soft">${I('route')}<span class="small">Arma la ruta y apruébala. Al aprobar, solo se habilita la etapa Convertir; las demás las abres cuando quieras.</span></div>`:''}
+ ${DIMS.map(d=>{const as=pt.assignments.filter(a=>a.stage===d.k);const avail=S.library.filter(l=>l.active&&l.dim===d.k&&!as.some(a=>a.libId===l.id&&a.active));
+  return `<div class="card stack"><div class="row between"><div class="row">${dimBadge(d.k)}<h3>${d.name}</h3></div>${pt.routeApproved?`<div class="row">${pt.stages[d.k]?pill('Habilitada','st-ok'):pill('Bloqueada','st-lock')}<button class="btn btn-line btn-sm" data-act="toggleStage" data-id="${pt.id}" data-k="${d.k}">${pt.stages[d.k]?'Bloquear':'Habilitar etapa'}</button></div>`:''}</div>
+  ${as.length?`<div class="tbl-wrap"><table><thead><tr><th>Actividad</th><th>Tipo</th><th>Entrega</th><th>Estado</th><th></th></tr></thead><tbody>${as.map(a=>`<tr style="${a.active?'':'opacity:.55'}"><td><b>${esc(a.name)}</b><div class="tiny muted">v${a.ver}${a.active?'':' · retirada'}</div></td>
+   <td><select data-change="mand" data-id="${pt.id}" data-aid="${a.id}" ${a.active?'':'disabled'} style="min-height:36px;padding:6px 10px;font-size:13px;width:auto"><option value="1" ${a.mandatory?'selected':''}>Obligatoria</option><option value="0" ${a.mandatory?'':'selected'}>Complementaria</option></select></td>
+   <td><input type="date" value="${a.due||''}" data-change="due" data-id="${pt.id}" data-aid="${a.id}" ${a.active&&dStatus(a)!=='aprobado'?'':'disabled'} style="min-height:36px;padding:6px 10px;font-size:13px;width:auto"></td>
+   <td>${stPill(a)}</td><td>${a.active?`<button class="btn btn-line btn-sm" data-act="retire" data-id="${pt.id}" data-aid="${a.id}">Retirar</button>`:`<button class="btn btn-dark btn-sm" data-act="restore" data-id="${pt.id}" data-aid="${a.id}">Recuperar</button>`}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small muted">Sin actividades.</p>'}
+  ${avail.length?`<div class="row"><select id="add-${d.k}" style="flex:1;min-width:200px">${avail.map(l=>`<option value="${l.id}">${esc(l.name)} (v${l.version})</option>`).join('')}</select><select id="addm-${d.k}" style="width:auto"><option value="1">Obligatoria</option><option value="0">Complementaria</option></select><button class="btn btn-dark btn-sm" data-act="addAct" data-id="${pt.id}" data-k="${d.k}">${I('plus')}Agregar</button></div>`:''}</div>`}).join('')}
+ ${!pt.routeApproved?`<div class="card-dark row between"><div class="stack-s"><h3>Aprobar ruta</h3><p class="small" style="color:var(--on-dark-muted)">${dv?'Se habilitará la etapa Convertir y el participante recibirá un aviso en su panel.':'Primero valida el diagnóstico de esta persona.'}</p></div><button class="btn btn-lime" data-act="approveRoute" data-id="${pt.id}" ${dv&&pt.assignments.some(a=>a.active)?'':'disabled'}>${I('check')}Aprobar ruta</button></div>`:''}
+ <div class="card stack-s"><h3>Historial administrativo</h3><p class="tiny muted">Solo visible para ti.</p>${pt.history.length?`<div class="tbl-wrap"><table><thead><tr><th>Fecha</th><th>Cambio</th><th>Antes</th><th>Después</th><th>Autor</th></tr></thead><tbody>${pt.history.map(h=>`<tr><td class="small">${fd(h.date)}</td><td class="small"><b>${esc(h.change)}</b></td><td class="small muted">${esc(h.before)}</td><td class="small">${esc(h.after)}</td><td class="small">${esc(h.author)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small muted">Sin cambios registrados.</p>'}</div></div>`};
+
+V['a-review']=()=>{const pt=part(UI.params.id);const a=pt&&pt.assignments.find(x=>x.id===UI.params.aid);if(!a)return empty('No encontrado');const p=person(pt.pid);
+ const last=a.versions[a.versions.length-1];const pending=last&&!last.review;
+ return `<div class="stack-l" style="max-width:860px"><button class="link small" data-go="a-reviews" style="align-self:flex-start">← Revisiones</button>
+ ${aHead(esc(a.name),`${esc(fullName(p))} · ${DIM[a.stage].name} · ${a.mandatory?'Obligatoria':'Complementaria'}${a.due?' · entrega '+fd(a.due):''}`,stPill(a))}
+ ${p.status==='suspendido'?`<div class="notice n-soft">${I('alert')}<span class="small">La cuenta está suspendida. Puedes revisar y aprobar; si pides ajustes, la persona no podrá hacerlos hasta que la reactives.</span></div>`:''}
+ ${!partActive(pt)?`<div class="notice n-soft">${I('alert')}<span class="small">La mentoría finalizó. Si pides ajustes, deberás ampliar la fecha para que pueda editarlos.</span></div>`:''}
+ ${pending?`<form class="stack-l" data-form="review" data-id="${pt.id}" data-aid="${a.id}"><div class="card stack-l"><div class="row between"><h3>Versión ${last.n}</h3><span class="small muted">Enviada ${fd(last.sentAt)} ${hm(last.sentAt)}</span></div>
+  ${a.fields.map((f,i)=>`<div class="stack-s"><span class="flabel">${i+1}. ${esc(f)}</span><div class="ans">${esc(last.answers[i]||'—')}</div><input type="text" id="cm-${i}" placeholder="Comentario sobre esta respuesta (opcional)"></div>`).join('')}</div>
+  <div class="card stack"><div class="field"><label for="rv-g">Evaluación general</label><textarea id="rv-g" required placeholder="Lo que está bien y lo que falta…"></textarea></div>${UI.err?`<p class="err">${esc(UI.err)}</p>`:''}
+  <div class="row"><button class="btn btn-lime" type="submit" data-decision="aprobado">${I('check')}Aprobar versión ${last.n}</button><button class="btn btn-orange" type="submit" data-decision="ajustes">Solicitar ajustes</button></div></div></form>`
+ :`<div class="notice n-soft">${I('check')}<span class="small">No hay una versión pendiente de revisión.</span></div>`}
+ ${a.versions.length?`<div class="stack-s"><h3>Historial de revisiones</h3>${[...a.versions].reverse().filter(v=>v.review).map(v=>`<details class="ver"><summary><b>Versión ${v.n}</b><span class="small muted">${fd(v.review.date)}</span>${v.review.decision==='aprobado'?pill('Aprobada','st-apr'):pill('Ajustes pedidos','st-aju')}</summary><div class="body small">${a.fields.map((f,i)=>`<div class="stack-s"><b>${esc(f)}</b><div class="ans">${esc(v.answers[i]||'—')}</div>${v.review.comments[i]?`<div class="comment">${I('msg')}${esc(v.review.comments[i])}</div>`:''}</div>`).join('')}<p><b>General:</b> ${esc(v.review.general)}</p></div></details>`).join('')||'<p class="small muted">Aún no hay revisiones.</p>'}</div>`:''}</div>`};
+
+V['a-track']=()=>{const pt=part(UI.params.id);if(!pt)return empty('No encontrado');const p=person(pt.pid);const pr=progress(pt);const ps=partsOf(p.id);const s=personState(p);
+ const sameProgCoh=S.cohorts.filter(c=>c.programId===pt.programId);
+ return `<div class="stack-l"><button class="link small" data-go="a-people" style="align-self:flex-start">← Participantes</button>
+ ${aHead(esc(fullName(p)),`${esc(p.email)} · ${esc(p.profesion||'')} · ${esc(p.pais||'')}`,pill(s[0],s[1]))}
+ ${ps.length>1?`<div class="row">${ps.map(x=>`<button class="btn btn-sm ${x.id===pt.id?'btn-dark':'btn-line'}" data-go="a-track" data-id="${x.id}">${esc(prog(x.programId).name)}${partActive(x)?'':' · finalizada'}</button>`).join('')}</div>`:''}
+ <div class="kpis"><div class="kpi"><span>Progreso oficial</span><b class="num">${pr.pct===null?'—':pr.pct+'%'}</b><span>${pr.pct===null?'Pendiente de iniciar':pr.appr+' de '+pr.mand+' obligatorias aprobadas'}</span></div><div class="kpi"><span>Trabajo presentado</span><b class="num">${pr.presented}/${pr.total}</b><span>Enviadas o aprobadas</span></div><div class="kpi"><span>En revisión · ajustes</span><b class="num">${pr.rev} · ${pr.aju}</b><span>Atrasadas: ${pr.late}</span></div><div class="kpi"><span>Participación</span><b style="font-size:18px">${partActive(pt)?'Activa':'Finalizada'}</b><span>${fd(pt.start)} – ${fd(pt.end)}</span></div></div>
+ <div class="grid2">
+  <div class="card stack"><h3>Diagnósticos</h3><div class="row between small"><span>Inicial (v${pt.diag.initial.version})</span>${pill(DIAG_ST[pt.diag.initial.status][0],DIAG_ST[pt.diag.initial.status][1])}</div><div class="row between small"><span>Final</span>${pill(finalLabel(pt)[0],finalLabel(pt)[1])}</div>
+   <div class="row">${pt.diag.initial.status!=='no_iniciado'?`<button class="btn btn-line btn-sm" data-go="a-review-diag" data-id="${pt.id}">Ver diagnóstico inicial</button>`:''}${!pt.diag.final.enabled&&partActive(pt)&&pt.diag.initial.status==='validado'?`<button class="btn btn-dark btn-sm" data-act="enableFinal" data-id="${pt.id}">Habilitar diagnóstico final</button>`:''}</div>
+   ${pt.diag.final.status==='enviado'?`<div class="small">${DIMS.map(d=>`${d.name}: ${pt.diag.initial.scores[d.k]} → <b>${pt.diag.final.scores[d.k]}</b>`).join(' · ')}</div>`:''}</div>
+  <div class="card stack"><h3>Fechas y cohorte</h3><form class="row" data-form="extend" data-id="${pt.id}" style="align-items:flex-end"><div class="field" style="flex:1;min-width:160px"><label for="ex-end">Fecha de finalización</label><input id="ex-end" type="date" value="${pt.end}" required></div><button class="btn btn-dark btn-sm" type="submit">${partActive(pt)?'Cambiar fecha':'Ampliar mentoría'}</button></form>
+   ${sameProgCoh.length?`<div class="row" style="align-items:flex-end"><div class="field" style="flex:1;min-width:160px"><label for="tr-c">Cohorte</label><select id="tr-c">${sameProgCoh.map(c=>`<option value="${c.id}" ${c.id===pt.cohortId?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><button class="btn btn-line btn-sm" data-act="transfer" data-id="${pt.id}">Transferir</button></div>`:''}
+   <p class="tiny muted">Ampliar restaura la edición; las versiones aprobadas siguen protegidas. Transferir conserva todo el avance.</p></div>
+ </div>
+ <div class="card stack"><div class="row between"><h3>Ruta y actividades</h3><button class="btn btn-dark btn-sm" data-go="a-route" data-id="${pt.id}">${I('route')}${pt.routeApproved?'Editar ruta':'Diseñar ruta'}</button></div>
+  <div class="row small">${DIMS.map(d=>`<span class="row" style="gap:6px">${dimBadge(d.k,24)}${pt.stages[d.k]?'Habilitada':'Bloqueada'}</span>`).join('')}</div>
+  ${pt.assignments.length?`<div class="tbl-wrap"><table><thead><tr><th>Actividad</th><th>Tipo</th><th>Entrega</th><th>Estado</th><th></th></tr></thead><tbody>${pt.assignments.map(a=>`<tr style="${a.active?'':'opacity:.55'}"><td><div class="row" style="gap:8px;flex-wrap:nowrap">${dimBadge(a.stage,24)}<b>${esc(a.name)}</b></div>${a.active?'':'<span class="tiny muted">Retirada</span>'}</td><td class="small">${a.mandatory?'Obligatoria':'Complementaria'}</td><td class="small">${fd(a.due)}</td><td>${stPill(a)}</td><td>${dStatus(a)==='revision'?`<button class="btn btn-dark btn-sm" data-go="a-review" data-id="${pt.id}" data-aid="${a.id}">Revisar</button>`:a.versions.length?`<button class="btn btn-line btn-sm" data-go="a-review" data-id="${pt.id}" data-aid="${a.id}">Historial</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small muted">Sin actividades asignadas.</p>'}</div>
+ <form class="card stack" data-form="notes" data-id="${pt.id}"><h3>Observaciones de mentoría</h3><textarea id="nt">${esc(pt.notes||'')}</textarea><div><button class="btn btn-line btn-sm" type="submit">Guardar</button></div></form>
+ <div class="card stack-s"><h3>Historial de cambios</h3>${pt.history.length?pt.history.slice(0,8).map(h=>`<div class="row between small" style="border-bottom:1px solid var(--line);padding-block:8px"><span><b>${esc(h.change)}</b> · ${esc(h.before)} → ${esc(h.after)}</span><span class="muted">${fd(h.date)}</span></div>`).join(''):'<p class="small muted">Sin cambios.</p>'}</div>
+ <form class="card stack" data-form="addPart" data-pid="${p.id}"><h3>Agregar a otro programa</h3><p class="small muted">Conserva la cuenta y crea una participación independiente.</p><div class="grid3"><div class="field"><label for="ap-p">Programa</label><select id="ap-p">${S.programs.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')}</select></div><div class="field"><label for="ap-s">Inicio</label><input id="ap-s" type="date" value="${todayISO()}"></div><div class="field"><label for="ap-d">Duración (días)</label><input id="ap-d" type="number" value="90" min="1"></div></div><div><button class="btn btn-line btn-sm" type="submit">${I('plus')}Crear participación</button></div></form>
+ </div>`};
+
+V['a-library']=()=>{const edit=UI.params.edit;
+ const form=(l)=>`<form class="card stack" data-form="libSave" data-id="${l?l.id:''}" style="border-color:var(--ink)"><h3>${l?'Editar «'+esc(l.name)+'»':'Nueva actividad'}</h3>${l?`<div class="notice n-soft">${I('alert')}<span class="small">Guardar crea la versión ${l.version+1}. Las asignaciones existentes conservan su versión.</span></div>`:''}
+ <div class="grid2"><div class="field"><label for="lb-n">Nombre</label><input id="lb-n" required value="${esc(l?.name||'')}"></div><div class="field"><label for="lb-d">Dimensión CODE</label><select id="lb-d">${DIMS.map(d=>`<option value="${d.k}" ${l?.dim===d.k?'selected':''}>${d.name}</option>`).join('')}</select></div></div>
+ <div class="field"><label for="lb-p">Propósito</label><input id="lb-p" required value="${esc(l?.purpose||'')}"></div><div class="field"><label for="lb-i">Instrucciones</label><textarea id="lb-i" style="min-height:70px" required>${esc(l?.instructions||'')}</textarea></div>
+ <div class="field"><label for="lb-f">Preguntas o campos (uno por línea)</label><textarea id="lb-f" required>${esc((l?.fields||[]).join('\n'))}</textarea></div>
+ <div class="row"><button class="btn btn-dark" type="submit">Guardar</button><button class="btn btn-line" type="button" data-go="a-library">Cancelar</button></div></form>`;
+ return `<div class="stack-l">${aHead('Biblioteca de actividades CODE','Editar no altera trabajos ya comenzados. Desactivar impide nuevas asignaciones sin borrar trabajos existentes.',`<button class="btn btn-lime" data-go="a-library" data-edit="new">${I('plus')}Nueva actividad</button>`)}
+ ${edit==='new'?form(null):''}
+ ${DIMS.map(d=>`<div class="stack-s"><div class="row">${dimBadge(d.k)}<h3>${d.name}</h3></div><div class="tbl-wrap"><table><thead><tr><th>Actividad</th><th>Versión</th><th>Asignada a</th><th>Estado</th><th></th></tr></thead><tbody>${S.library.filter(l=>l.dim===d.k).map(l=>{const n=S.participations.filter(pt=>pt.assignments.some(a=>a.libId===l.id)).length;return `<tr style="${l.active?'':'opacity:.6'}"><td><b>${esc(l.name)}</b><div class="tiny muted">${esc(l.purpose)}</div></td><td class="num small">v${l.version}</td><td class="small num">${n} participación(es)</td><td>${l.active?pill('Activa','st-ok'):pill('Inactiva','st-sin')}</td><td><div class="row" style="gap:6px;flex-wrap:nowrap"><button class="btn btn-line btn-sm" data-go="a-library" data-edit="${l.id}">Editar</button><button class="btn btn-line btn-sm" data-act="toggleLib" data-id="${l.id}">${l.active?'Desactivar':'Activar'}</button></div></td></tr>${edit===l.id?`<tr><td colspan="5">${form(l)}</td></tr>`:''}`}).join('')}</tbody></table></div></div>`).join('')}
+ <p class="tiny muted">Contenido metodológico de ejemplo, pendiente de aprobación editorial de Tiby (PRD 5.12).</p></div>`};
+
+V['a-diags']=()=>{const t=UI.params.t==='priv'?'priv':'pub';const vers=t==='pub'?S.pubVersions:S.privVersions;const cur=t==='pub'?S.pubCurrent:S.privCurrent;const draft=vers.find(v=>v.status==='borrador');
+ return `<div class="stack-l">${aHead('Cuestionarios','Las ediciones se guardan como borrador. Solo una publicación manual crea una versión vigente.')}
+ <div class="card row between"><div class="stack-s"><h3>Diagnóstico público</h3><p class="small muted">${S.publicActive?'Se pueden iniciar diagnósticos nuevos.':'En pausa: no se inician intentos nuevos; los iniciados pueden terminarse en su plazo de 7 días y los resultados siguen disponibles 30 días.'}</p></div><button class="btn ${S.publicActive?'btn-line':'btn-lime'}" data-act="togglePublic">${S.publicActive?'Pausar diagnóstico público':'Activar diagnóstico público'}</button></div>
+ <div class="row"><button class="btn btn-sm ${t==='pub'?'btn-dark':'btn-line'}" data-go="a-diags" data-t="pub">Público (12 preguntas)</button><button class="btn btn-sm ${t==='priv'?'btn-dark':'btn-line'}" data-go="a-diags" data-t="priv">Privado (mentoría)</button></div>
+ <div class="tbl-wrap"><table><thead><tr><th>Versión</th><th>Estado</th><th>Publicada</th><th>Preguntas</th><th>Uso</th></tr></thead><tbody>${[...vers].reverse().map(v=>{const used=t==='pub'?S.attempts.filter(a=>a.v===v.v).length+' intentos':S.participations.filter(p=>p.diag.initial.version===v.v&&p.diag.initial.status!=='no_iniciado').length+' diagnósticos';return `<tr><td><b>v${v.v}</b></td><td>${v.status==='borrador'?pill('Borrador','st-bor'):v.v===cur?pill('Vigente','st-apr'):pill('Anterior','st-sin')}</td><td class="small">${fd(v.publishedAt)}</td><td class="num small">${v.questions.length}</td><td class="small">${used}</td></tr>`}).join('')}</tbody></table></div>
+ ${draft?`<form class="card stack" data-form="draftSave" data-t="${t}"><div class="row between"><h3>Borrador v${draft.v}</h3>${pill('No publicado','st-bor')}</div>
+  ${draft.questions.map((q,i)=>`<div class="stack-s" style="padding-block:6px;border-bottom:1px solid var(--line)"><div class="row" style="gap:8px">${dimBadge(q.dim,24)}<span class="tiny muted">${q.type==='text'?'Respuesta abierta':t==='pub'?'4 opciones · puntaje 0 a 3':'Escala 1 a 5'}</span></div><input type="text" id="dq-${i}" value="${esc(q.text)}" aria-label="Pregunta ${i+1}">${q.opts?`<div class="grid2">${q.opts.map((o,j)=>`<input type="text" id="do-${i}-${j}" value="${esc(o)}" aria-label="Opción ${j+1} (${j} puntos)" style="font-size:13.5px;min-height:38px;padding:7px 11px">`).join('')}</div>`:''}</div>`).join('')}
+  <div class="row"><button class="btn btn-line" type="submit">Guardar borrador</button></div>
+  <div class="card-soft stack-s"><label class="check"><input type="checkbox" id="pub-ok">Revisé preguntas, opciones y puntuaciones. Publicar no modifica evaluaciones anteriores ni en curso.</label><div><button class="btn btn-dark" type="button" data-act="publishDraft" data-t="${t}">Publicar v${draft.v}</button></div>${UI.err?`<p class="err">${esc(UI.err)}</p>`:''}</div></form>`
+ :`<div><button class="btn btn-dark" data-act="newDraft" data-t="${t}">${I('plus')}Crear borrador desde la versión vigente</button></div>`}
+ <p class="tiny muted">Preguntas, puntuaciones y recomendaciones de esta demo son de ejemplo y requieren aprobación de Tiby antes de usarse con personas reales.</p></div>`};
+
+V['a-stats']=()=>{const vf=UI.params.v||String(S.pubCurrent);const all=vf==='all';
+ const at=S.attempts.filter(a=>all||a.v===+vf);const comp=at.filter(a=>a.status==='completado');const clicks=at.reduce((s,a)=>s+(a.waClicks||0),0);
+ const rate=at.length?Math.round(comp.length/at.length*100):0;
+ const avg={};DIMS.forEach(d=>{avg[d.k]=comp.length?Math.round(comp.reduce((s,a)=>s+a.scores[d.k],0)/comp.length):0});
+ const pc={};DIMS.forEach(d=>pc[d.k]=comp.filter(a=>a.prio.includes(d.k)).length);const maxP=Math.max(1,...Object.values(pc));
+ // tendencia: últimas 8 semanas
+ const weeks=[];const end=new Date();for(let w=7;w>=0;w--){const to=new Date(end.getTime()-w*7*864e5),from=new Date(to.getTime()-7*864e5);const inW=at.filter(a=>{const t=new Date(a.start);return t>from&&t<=to});weeks.push({lab:fd(isoOf(from)).replace(/ \d{4}$/,''),st:inW.length,cp:inW.filter(a=>a.status==='completado').length})}
+ const mx=Math.max(1,...weeks.map(w=>w.st));
+ return `<div class="stack-l">${aHead('Estadísticas del diagnóstico público','Datos anónimos y agregados. Se cuentan intentos, no personas.',`<select data-change="statsV" style="width:auto"><option value="all" ${all?'selected':''}>Todas las versiones (solo volúmenes)</option>${S.pubVersions.filter(v=>v.status!=='borrador').map(v=>`<option value="${v.v}" ${vf==String(v.v)?'selected':''}>Versión ${v.v}${v.v===S.pubCurrent?' (vigente)':''}</option>`).join('')}</select>`)}
+ <div class="kpis"><div class="kpi"><b class="num">${at.length}</b><span>Intentos iniciados</span></div><div class="kpi"><b class="num">${comp.length}</b><span>Diagnósticos completados</span></div><div class="kpi"><b class="num">${rate}%</b><span>Tasa de finalización</span></div><div class="kpi"><b class="num">${clicks}</b><span>Clics en WhatsApp</span></div></div>
+ <div class="notice n-soft">${I('alert')}<span class="small">Un clic en WhatsApp indica que se abrió la aplicación; no confirma una conversación ni una venta. Una misma persona puede hacer varios intentos.</span></div>
+ <div class="card stack"><div class="row between"><h3>Tendencia semanal</h3><div class="legend"><span><i style="background:var(--soft2)"></i>Iniciados</span><span><i style="background:var(--ink)"></i>Completados</span></div></div>
+  <div style="overflow-x:auto"><div class="cols" style="min-width:420px">${weeks.map(w=>`<div class="c"><span class="val num">${w.cp}/${w.st}</span><div class="stk"><div class="s1" style="height:${w.st/mx*100}%"></div><div class="s2" style="height:${w.cp/mx*100}%"></div></div><span class="lab">${w.lab}</span></div>`).join('')}</div></div></div>
+ ${all?`<div class="notice n-amber">${I('alert')}<span class="small">Las puntuaciones por dimensión se muestran por versión, porque versiones distintas pueden no ser comparables. Elige una versión para verlas.</span></div>`:
+ `<div class="grid2"><div class="card stack"><h3>Promedio por dimensión</h3>${dimBars(avg)}</div>
+ <div class="card stack"><h3>Dimensiones prioritarias más frecuentes</h3><p class="tiny muted">Un intento con empate cuenta en cada dimensión empatada.</p>${[...DIMS].sort((a,b)=>pc[b.k]-pc[a.k]).map(d=>`<div class="dimrow">${dimBadge(d.k)}<span style="font-weight:600">${d.name}</span><div class="bar"><span style="width:${pc[d.k]/maxP*100}%;background:var(--orange)"></span></div><b class="num" style="text-align:right">${pc[d.k]}</b></div>`).join('')}</div></div>`}
+ <p class="tiny muted">Incluye intentos de ejemplo generados para la demo. No se muestran fichas personales.</p></div>`};
+
+V['a-site']=()=>{const s=S.site;const f=(id,l)=>`<div class="field"><label for="st-${id}">${l}</label><input id="st-${id}" name="${id}" value="${esc(s[id])}"></div>`;const t=(id,l)=>`<div class="field"><label for="st-${id}">${l}</label><textarea id="st-${id}" name="${id}" style="min-height:80px">${esc(s[id])}</textarea></div>`;
+ return `<div class="stack-l" style="max-width:860px">${aHead('Editor del sitio público','Última actualización: '+fd(s.updatedAt),`<button class="btn btn-line" data-act="previewSite">${I('eye')}Ver sitio</button>`)}
+ <form class="stack-l" data-form="site">
+ <div class="card stack"><h3>Portada</h3>${f('heroTitle','Titular')}${f('heroHighlight','Parte destacada del titular (verde lima)')}${t('heroText','Texto de apoyo')}<div class="grid2">${f('ctaPrimary','Botón principal')}${f('ctaSecondary','Botón de participantes')}</div></div>
+ <div class="card stack"><h3>Presentación de Tiby</h3>${f('bioTitle','Título')}${t('bio','Presentación breve')}
+  <div class="field"><label for="st-photo">Fotografía</label><div class="row">${s.photo?`<img src="${s.photo}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:12px">`:'<span class="small muted">Sin imagen: se muestra el monograma TH.</span>'}<input id="st-photo" type="file" accept="image/*" style="max-width:260px">${s.photo?'<button class="btn btn-line btn-sm" type="button" data-act="rmPhoto">Quitar</button>':''}</div></div></div>
+ <div class="card stack"><h3>Diagnóstico y CODE</h3>${f('diagTitle','Titular de la explicación del diagnóstico')}${DIMS.map(d=>`<div class="field"><label for="st-dim-${d.k}">${d.k} · ${d.name}</label><textarea id="st-dim-${d.k}" style="min-height:60px">${esc(s.dims[d.k])}</textarea></div>`).join('')}</div>
+ <div class="card stack"><h3>WhatsApp</h3><div class="field"><label for="st-whatsapp">Número de destino (con código de país, sin +)</label><input id="st-whatsapp" name="whatsapp" inputmode="numeric" pattern="[0-9]{8,15}" value="${esc(s.whatsapp)}"></div><p class="small muted">El mensaje sugerido se adapta a las dimensiones prioritarias de cada resultado.</p></div>
+ <div class="savebar" style="bottom:0"><button class="btn btn-lime" type="submit">Guardar cambios</button></div></form></div>`};
+
+V['a-deletions']=()=>`<div class="stack-l">${aHead('Solicitudes de eliminación','Ninguna eliminación irreversible se ejecuta sin verificación y confirmación final.')}
+ ${S.deletions.length?S.deletions.map(r=>{const p=person(r.pid);return `<form class="card stack" data-form="delStep" data-id="${r.id}"><div class="row between"><div class="stack-s"><h3>${esc(r.name)}</h3><span class="small muted">${esc(r.email)} · recibida ${fd(r.date)}</span></div>${pill(r.status,r.status==='Cerrada'?'st-sin':'st-rev')}</div>
+ ${r.why?`<p class="small">Motivo: «${esc(r.why)}»</p>`:''}
+ ${r.status==='Cerrada'?`<p class="small"><b>Decisión:</b> ${esc(r.decision)} · ${fd(r.closedAt)}${r.retain?' · Conservado por obligación legal: '+esc(r.retain):''}</p>`:`
+ <label class="check"><input type="checkbox" id="dv-${r.id}" ${r.verified?'checked':''}>Identidad verificada</label>
+ <div class="field"><label for="dvn-${r.id}">Cómo se verificó</label><input id="dvn-${r.id}" value="${esc(r.verifyNote||'')}" placeholder="Ej.: videollamada, confirmación por correo registrado"></div>
+ <div class="field"><label for="drt-${r.id}">Información que debe conservarse por obligación legal (si aplica)</label><input id="drt-${r.id}" value="${esc(r.retain||'')}" placeholder="Ej.: facturas de los últimos 5 años"></div>
+ <div class="field"><label for="ddc-${r.id}">Decisión administrativa</label><select id="ddc-${r.id}"><option value="">Selecciona…</option><option ${r.decision==='Eliminar cuenta y datos personales'?'selected':''}>Eliminar cuenta y datos personales</option><option ${r.decision==='Rechazar: identidad no verificada'?'selected':''}>Rechazar: identidad no verificada</option></select></div>
+ <div class="row"><button class="btn btn-line" type="submit">Guardar avance</button></div>
+ <div class="card-soft stack-s"><b>Confirmación final</b><p class="small">Para ejecutar la eliminación irreversible escribe <b>ELIMINAR</b>. Se anonimiza la cuenta; lo marcado como conservación legal se mantiene. Los diagnósticos públicos anónimos no están vinculados y no se ven afectados.</p><div class="row"><input id="dcf-${r.id}" placeholder="ELIMINAR" style="max-width:200px"><button class="btn btn-orange" type="button" data-act="execDelete" data-id="${r.id}">Ejecutar</button></div>${UI.err&&UI.params.rid===r.id?`<p class="err">${esc(UI.err)}</p>`:''}</div>`}
+ <details class="ver"><summary class="small"><b>Registro de la gestión</b></summary><div class="body small">${r.log.map(l=>`<span>${fd(l.d)} · ${esc(l.t)}</span>`).join('')}</div></details></form>`}).join(''):empty('No hay solicitudes','Cuando un participante pida eliminar su cuenta, aparecerá aquí.')}</div>`;
+
+/* ============================== ACCIONES ============================== */
+function go(view,params={}){const p={...params};delete p.go;delete p.act;UI.view=view;UI.params=p;UI.err='';UI.flash=null;saveUI();render();window.scrollTo(0,0)}
+function loginAs(role,uid){UI.role=role;UI.uid=uid||null;UI.partId=null;if(role==='participant')curPart()}
+const ACT={
+ startAttempt(){if(!S.publicActive)return;const a={id:'A'+Date.now().toString(36),v:S.pubCurrent,start:nowTs(),status:'incompleto',answers:{},idx:0,waClicks:0};S.attempts.push(a);S.browser.current=a.id;S.browser.mine.push(a.id);save();go('quiz')},
+ resume(el){S.browser.current=el.dataset.id;save();go('quiz')},
+ answer(el){const a=S.attempts.find(x=>x.id===S.browser.current);a.answers[el.dataset.q]=+el.dataset.v;save();render()},
+ qnext(){const a=S.attempts.find(x=>x.id===S.browser.current);a.idx=Math.min((a.idx||0)+1,11);save();render();window.scrollTo(0,0)},
+ qprev(){const a=S.attempts.find(x=>x.id===S.browser.current);a.idx=Math.max((a.idx||0)-1,0);save();render()},
+ finish(){const a=S.attempts.find(x=>x.id===S.browser.current);if(!a)return;
+  if(a.status!=='completado'){const qs=pubVersion(a.v).questions;const miss=qs.findIndex(q=>a.answers[q.id]===undefined);if(miss>=0){a.idx=miss;save();render();return}
+   a.scores=pubScores(a);const r=analyze(a.scores);a.strong=r.strong;a.prio=r.prio;a.recs=pickRecs(a.scores);a.end=nowTs();a.status='completado';save()}
+  go('results',{id:a.id})},
+ waClick(el){const a=S.attempts.find(x=>x.id===el.dataset.id);if(a){a.waClicks=(a.waClicks||0)+1;save()}},
+ logout(){UI.role='public';UI.uid=null;UI.partId=null;go('home')},
+ demoRole(el){const r=el.dataset.r;if(r==='public'){loginAs('public');go('home')}else if(r==='participant'){loginAs('participant','p1');go('p-home')}else{loginAs('admin');go('a-home')}},
+ demoReset(){if(!UI.confirmReset){UI.confirmReset=true;renderDemo();setTimeout(()=>{UI.confirmReset=false;renderDemo()},4000);return}UI.confirmReset=false;S=seed();save();loginAs('public');go('home');toast('Demo reiniciada')},
+ openPart(el){UI.partId=el.dataset.id;go(el.dataset.to||'p-home')},
+ scale(el){const pt=curPart();const dg=pt.diag[el.dataset.kind];dg.answers[el.dataset.q]=+el.dataset.v;if(dg.status==='no_iniciado'){dg.status='en_progreso';dg.startedAt=nowTs()}save();render();flashSave()},
+ sendDiag(el){const pt=curPart();const kind=el.dataset.kind;const dg=pt.diag[kind];const ver=privVersion(kind==='final'?pt.diag.initial.version:dg.version);
+  const miss=ver.questions.filter(q=>dg.answers[q.id]===undefined||String(dg.answers[q.id]).trim()==='');
+  if(miss.length){UI.err=`No puedes enviar todavía: faltan ${miss.length} respuesta(s) obligatoria(s).`;render();return}
+  const sc=privScores(dg.answers,ver.v);
+  if(kind==='initial'){if(dg.status==='correccion'&&dg.correction){const c=dg.corrections[dg.corrections.length-1];c.resentAt=nowTs();c.newAnswers=clone(dg.answers);c.newScores=sc;dg.correction=null}
+   dg.scores=sc;dg.sentAt=nowTs();dg.status='enviado';dg.validatedAt=null;save();toast('Diagnóstico enviado a Tiby');go('p-diagnostico')}
+  else{dg.scores=sc;dg.sentAt=nowTs();dg.status='enviado';save();toast('Diagnóstico final enviado');go('p-compare')}},
+ saveDraft(el){const pt=curPart();const a=pt.assignments.find(x=>x.id===el.dataset.aid);ensureDraft(a);a.draft.savedAt=nowTs();save();flashSave();toast('Borrador guardado')},
+ openSubmit(el){go('p-activity',{aid:el.dataset.aid,confirm:'1'});setTimeout(()=>{const b=document.querySelector('[data-act="submitAct"]');b&&b.scrollIntoView({block:'center'})},30)},
+ cancelSubmit(el){UI.params={aid:el.dataset.aid};UI.err='';render()},
+ submitAct(el){const pt=curPart();const a=pt.assignments.find(x=>x.id===el.dataset.aid);if(!canEdit(pt,a))return;const ans=activityAnswers(a).map(x=>String(x||'').trim());
+  const miss=ans.filter(x=>!x).length;if(miss){UI.err=`Completa todas las respuestas antes de enviar (faltan ${miss}).`;render();return}
+  a.versions.push({n:a.versions.length+1,answers:ans,sentAt:nowTs(),late:!!(a.due&&a.due<todayISO()),review:null});a.draft=null;save();toast('Enviado a revisión');go('p-activity',{aid:a.id})},
+ // admin
+ suspend(el){const p=person(el.dataset.id);p.status='suspendido';partsOf(p.id).forEach(pt=>pt.history.unshift({date:nowTs(),change:'Acceso suspendido',before:'Activo',after:'Suspendido',author:'Tiby Hernández'}));save();toast('Acceso suspendido. La información se conserva.');render()},
+ reactivate(el){const p=person(el.dataset.id);p.status='activo';partsOf(p.id).forEach(pt=>pt.history.unshift({date:nowTs(),change:'Acceso reactivado',before:'Suspendido',after:'Activo',author:'Tiby Hernández'}));save();toast('Acceso reactivado');render()},
+ validateDiag(el){const pt=part(el.dataset.id);const o=document.getElementById('obs');if(o)pt.diag.initial.obs=o.value;pt.diag.initial.status='validado';pt.diag.initial.validatedAt=todayISO();logChange(pt,'Diagnóstico validado','En revisión','Validado');save();toast('Diagnóstico validado');render()},
+ allowCorrection(el){const pt=part(el.dataset.id);const d=pt.diag.initial;d.corrections.push({authorizedAt:nowTs(),prevAnswers:clone(d.answers),prevScores:clone(d.scores),prevSentAt:d.sentAt,resentAt:null,newScores:null});d.correction={authorizedAt:nowTs()};d.status='correccion';logChange(pt,'Corrección de diagnóstico autorizada',d.validatedAt?'Validado':'En revisión','Corrección habilitada','Tiby habilitó la corrección de tu diagnóstico inicial.');save();toast('Corrección autorizada');render()},
+ approveRoute(el){const pt=part(el.dataset.id);if(pt.diag.initial.status!=='validado')return;pt.routeApproved=true;pt.routeApprovedAt=todayISO();pt.stages={C:true,O:false,D:false,E:false};logChange(pt,'Ruta aprobada','En diseño','Aprobada · Convertir habilitada','Tu ruta fue aprobada. Ya puedes comenzar las actividades de Convertir.');save();toast('Ruta aprobada');render()},
+ toggleStage(el){const pt=part(el.dataset.id),k=el.dataset.k;const was=pt.stages[k];pt.stages[k]=!was;logChange(pt,'Etapa '+DIM[k].name,was?'Habilitada':'Bloqueada',was?'Bloqueada':'Habilitada',was?`Tiby bloqueó temporalmente la etapa ${DIM[k].name}.`:`Tiby habilitó la etapa ${DIM[k].name}. Ya puedes trabajar sus actividades.`);save();render()},
+ retire(el){const pt=part(el.dataset.id),a=pt.assignments.find(x=>x.id===el.dataset.aid);a.active=false;logChange(pt,'Actividad retirada · '+a.name,'En la ruta','Retirada (historial conservado)',pt.routeApproved?`Se retiró «${a.name}» de tu ruta. Tu trabajo se conserva.`:null);save();render()},
+ restore(el){const pt=part(el.dataset.id),a=pt.assignments.find(x=>x.id===el.dataset.aid);a.active=true;logChange(pt,'Actividad recuperada · '+a.name,'Retirada','En la ruta',pt.routeApproved?`«${a.name}» volvió a tu ruta con tu trabajo anterior.`:null);save();render()},
+ addAct(el){const pt=part(el.dataset.id),k=el.dataset.k;const lid=document.getElementById('add-'+k).value;const m=document.getElementById('addm-'+k).value==='1';const L=S.library.find(l=>l.id===lid);
+  const prev=pt.assignments.find(a=>a.libId===lid&&!a.active);
+  if(prev){prev.active=true;prev.mandatory=m;logChange(pt,'Actividad recuperada · '+prev.name,'Retirada','En la ruta',pt.routeApproved?`«${prev.name}» volvió a tu ruta con tu trabajo anterior.`:null)}
+  else{pt.assignments.push({id:uid('as'),libId:L.id,ver:L.version,name:L.name,stage:L.dim,purpose:L.purpose,instructions:L.instructions,fields:[...L.fields],mandatory:m,due:null,assignedAt:todayISO(),active:true,versions:[],draft:null,approvedVersion:null,approvedAt:null});
+   logChange(pt,'Actividad agregada · '+L.name,'—',m?'Obligatoria':'Complementaria',pt.routeApproved?`Se agregó la actividad ${m?'obligatoria':'complementaria'} «${L.name}».`:null)}
+  save();render()},
+ enableFinal(el){const pt=part(el.dataset.id);pt.diag.final.enabled=true;pt.diag.final.version=pt.diag.initial.version;logChange(pt,'Diagnóstico final','No habilitado','Habilitado','Tiby habilitó tu diagnóstico final.');save();toast('Diagnóstico final habilitado');render()},
+ transfer(el){const pt=part(el.dataset.id);const c=document.getElementById('tr-c').value;if(c===pt.cohortId)return;const before=coh(pt.cohortId)?.name||'—';pt.cohortId=c;logChange(pt,'Transferencia de cohorte',before,coh(c).name,`Pasaste a ${coh(c).name}. Todo tu avance se conserva.`);save();toast('Transferencia hecha. El avance se conserva.');render()},
+ toggleLib(el){const l=S.library.find(x=>x.id===el.dataset.id);l.active=!l.active;save();render()},
+ togglePublic(){S.publicActive=!S.publicActive;save();toast(S.publicActive?'Diagnóstico público activado':'Diagnóstico público en pausa');render()},
+ newDraft(el){const t=el.dataset.t;const vers=t==='pub'?S.pubVersions:S.privVersions;const cur=vers.find(v=>v.v===(t==='pub'?S.pubCurrent:S.privCurrent));vers.push({type:t,v:Math.max(...vers.map(v=>v.v))+1,status:'borrador',publishedAt:null,questions:clone(cur.questions)});save();render()},
+ publishDraft(el){if(!document.getElementById('pub-ok').checked){UI.err='Confirma la revisión antes de publicar.';render();return}const t=el.dataset.t;FORMS.draftSave(document.querySelector('[data-form="draftSave"]'),true);const vers=t==='pub'?S.pubVersions:S.privVersions;const d=vers.find(v=>v.status==='borrador');d.status='publicado';d.publishedAt=todayISO();if(t==='pub')S.pubCurrent=d.v;else S.privCurrent=d.v;UI.err='';save();toast(`Versión ${d.v} publicada`);render()},
+ previewSite(){loginAs('public');go('home')},
+ rmPhoto(){S.site.photo=null;save();render()},
+ execDelete(el){const r=S.deletions.find(x=>x.id===el.dataset.id);FORMS.delStep(el.closest('form'),true);const v=document.getElementById('dcf-'+r.id).value.trim();UI.params.rid=r.id;
+  if(!r.verified){UI.err='Primero registra la verificación de identidad.';render();return}if(r.decision!=='Eliminar cuenta y datos personales'){UI.err='La decisión administrativa no es eliminar.';render();return}if(v!=='ELIMINAR'){UI.err='Escribe ELIMINAR para confirmar.';render();return}
+  const p=person(r.pid);Object.assign(p,{nombre:'Participante',apellido:'eliminado',email:'eliminado-'+p.id,tel:'',experiencia:'',organizacion:'',negocio:'',actividad:'',servicios:'',clientes:'',objetivos:'',password:null,status:'eliminado'});
+  r.status='Cerrada';r.closedAt=todayISO();r.log.push({d:nowTs(),t:'Eliminación irreversible ejecutada y confirmada'});UI.err='';save();toast('Solicitud cerrada');render()}
+};
+function ensureDraft(a){if(!a.draft)a.draft={answers:clone(activityAnswers(a)),savedAt:nowTs()}}
+function flashSave(){const s=document.getElementById('savestate');if(s)s.innerHTML=I('check')+'Guardado automáticamente · '+hm(nowTs())}
+
+const FORMS={
+ login(f){const email=f.querySelector('#lg-email').value.trim().toLowerCase(),pass=f.querySelector('#lg-pass').value;UI.params.email=email;
+  if(email===ADMIN_EMAIL){if(pass!=='demo1234'){UI.err='Correo o contraseña incorrectos.';render();return}loginAs('admin');go('a-home');return}
+  const p=S.participants.find(x=>x.email.toLowerCase()===email);
+  if(!p||p.status==='eliminado'){UI.err='Correo o contraseña incorrectos.';render();return}
+  if(p.status==='invitado'){UI.err='Aún no activas tu cuenta. Usa el enlace de invitación que recibiste por correo.';render();return}
+  if(p.status==='suspendido'){UI.err='Tu acceso está suspendido. Comunícate con Tiby Hernández.';render();return}
+  if(p.password!==pass){UI.err='Correo o contraseña incorrectos.';render();return}
+  loginAs('participant',p.id);go('p-home')},
+ forgot(f){UI.flash='Demo: en la versión final, si el correo está registrado, se enviará un enlace seguro para crear una nueva contraseña.';render()},
+ invite(f){const p=person(f.dataset.id);const a=f.querySelector('#iv-p1').value,b=f.querySelector('#iv-p2').value;if(a.length<8){UI.err='La contraseña debe tener al menos 8 caracteres.';render();return}if(a!==b){UI.err='Las contraseñas no coinciden.';render();return}
+  p.password=a;p.status='activo';delete p.inviteToken;save();loginAs('participant',p.id);go('p-home');toast('Cuenta activada')},
+ profile(f){const u=me();['nombre','apellido','email','tel','pais','profesion','organizacion','experiencia','negocio','actividad','servicios','clientes','objetivos'].forEach(k=>{const el=f.querySelector(`[name="${k}"]`);if(el)u[k]=el.value.trim()});save();toast('Perfil actualizado');render()},
+ delreq(f){const u=me();S.deletions.push({id:uid('dr'),pid:u.id,name:fullName(u),email:u.email,date:nowTs(),why:f.querySelector('#dr-why').value.trim(),status:'Recibida',verified:false,log:[{d:nowTs(),t:'Solicitud recibida del participante'}]});save();toast('Solicitud enviada');render()},
+ newPerson(f){const v=id=>f.querySelector(id).value.trim();const email=v('#np-e').toLowerCase();if(S.participants.some(p=>p.email.toLowerCase()===email)){UI.err='Ya existe una cuenta con ese correo. Agrégala a otro programa desde su seguimiento.';render();return}
+  const pid=uid('p');const tok=uid('inv-');const progId=v('#np-p');let cohId=v('#np-c')||null;if(cohId&&coh(cohId).programId!==progId)cohId=null;const start=v('#np-s')||todayISO();const dur=+v('#np-d')||90;
+  S.participants.push({id:pid,nombre:v('#np-n'),apellido:v('#np-a'),email,password:null,tel:'',pais:'',profesion:'',experiencia:'',organizacion:'',negocio:'',actividad:'',servicios:'',clientes:'',objetivos:'',status:'invitado',joined:todayISO(),inviteToken:tok});
+  S.participations.push(newPart(pid,progId,cohId,start,dur));save();toast('Participante creado. Invitación lista.');go('a-people')},
+ addPart(f){const pid=f.dataset.pid;const pt=newPart(pid,f.querySelector('#ap-p').value,null,f.querySelector('#ap-s').value||todayISO(),+f.querySelector('#ap-d').value||90);S.participations.push(pt);save();toast('Nueva participación creada');go('a-track',{id:pt.id})},
+ newProgram(f){S.programs.push({id:uid('prog'),name:f.querySelector('#pg-n').value.trim(),desc:f.querySelector('#pg-d').value.trim(),start:f.querySelector('#pg-s').value,end:f.querySelector('#pg-e').value,status:'activo'});save();toast('Programa creado');render()},
+ newCohort(f){S.cohorts.push({id:uid('coh'),programId:f.querySelector('#ch-p').value,name:f.querySelector('#ch-n').value.trim(),start:f.querySelector('#ch-s').value,end:f.querySelector('#ch-e').value});save();toast('Cohorte creada');render()},
+ diagObs(f){part(f.dataset.id).diag.initial.obs=f.querySelector('#obs').value;save();toast('Observaciones guardadas')},
+ review(f,e){const pt=part(f.dataset.id),a=pt.assignments.find(x=>x.id===f.dataset.aid);const last=a.versions[a.versions.length-1];const dec=(e.submitter&&e.submitter.dataset.decision)||'ajustes';
+  const general=f.querySelector('#rv-g').value.trim();if(!general){UI.err='Escribe una evaluación general.';render();return}
+  const comments={};a.fields.forEach((_,i)=>{const c=f.querySelector('#cm-'+i).value.trim();if(c)comments[i]=c});
+  last.review={date:nowTs(),decision:dec,general,comments,by:'Tiby Hernández'};if(dec==='aprobado'){a.approvedVersion=last.n;a.approvedAt=todayISO()}
+  save();toast(dec==='aprobado'?'Versión aprobada':'Ajustes solicitados');go('a-reviews')},
+ extend(f){const pt=part(f.dataset.id);const v=f.querySelector('#ex-end').value;if(!v||v===pt.end)return;const was=partActive(pt);const before=pt.end;pt.end=v;
+  logChange(pt,'Fecha de finalización',fd(before),fd(v),!was&&partActive(pt)?`Tu mentoría se amplió hasta el ${fd(v)}. Puedes volver a editar tus trabajos.`:`Tu fecha de finalización ahora es ${fd(v)}.`);save();toast('Fecha actualizada');render()},
+ notes(f){part(f.dataset.id).notes=f.querySelector('#nt').value;save();toast('Observaciones guardadas')},
+ libSave(f){const v=id=>f.querySelector(id).value.trim();const fields=v('#lb-f').split('\n').map(x=>x.trim()).filter(Boolean);
+  if(f.dataset.id){const l=S.library.find(x=>x.id===f.dataset.id);Object.assign(l,{name:v('#lb-n'),dim:v('#lb-d'),purpose:v('#lb-p'),instructions:v('#lb-i'),fields,version:l.version+1})}
+  else S.library.push({id:uid('L'),name:v('#lb-n'),dim:v('#lb-d'),purpose:v('#lb-p'),instructions:v('#lb-i'),fields,active:true,version:1});
+  save();toast('Actividad guardada');go('a-library')},
+ draftSave(f,silent){silent=silent===true;const t=f.dataset.t;const d=(t==='pub'?S.pubVersions:S.privVersions).find(v=>v.status==='borrador');d.questions.forEach((q,i)=>{q.text=f.querySelector('#dq-'+i).value;if(q.opts)q.opts=q.opts.map((o,j)=>f.querySelector(`#do-${i}-${j}`).value)});save();if(!silent){toast('Borrador guardado');render()}},
+ site(f){const s=S.site;['heroTitle','heroHighlight','heroText','ctaPrimary','ctaSecondary','bioTitle','bio','diagTitle'].forEach(k=>{s[k]=f.querySelector('#st-'+k).value});DIMS.forEach(d=>s.dims[d.k]=f.querySelector('#st-dim-'+d.k).value);
+  const w=f.querySelector('#st-whatsapp').value.replace(/\D/g,'');if(w)s.whatsapp=w;s.updatedAt=todayISO();
+  const file=f.querySelector('#st-photo').files[0];
+  if(file){const rd=new FileReader();rd.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');const sc=Math.min(1,600/img.width);c.width=img.width*sc;c.height=img.height*sc;c.getContext('2d').drawImage(img,0,0,c.width,c.height);s.photo=c.toDataURL('image/jpeg',.82);save();toast('Sitio actualizado');render()};img.src=rd.result};rd.readAsDataURL(file)}
+  else{save();toast('Sitio actualizado');render()}},
+ delStep(f,silent){silent=silent===true;const r=S.deletions.find(x=>x.id===f.dataset.id);const ver=f.querySelector('#dv-'+r.id).checked;
+  if(ver&&!r.verified)r.log.push({d:nowTs(),t:'Identidad verificada'});r.verified=ver;r.verifyNote=f.querySelector('#dvn-'+r.id).value;const rt=f.querySelector('#drt-'+r.id).value;if(rt&&rt!==r.retain)r.log.push({d:nowTs(),t:'Conservación legal registrada'});r.retain=rt;
+  const dc=f.querySelector('#ddc-'+r.id).value;if(dc&&dc!==r.decision)r.log.push({d:nowTs(),t:'Decisión: '+dc});r.decision=dc;
+  r.status=dc?'Decisión registrada':ver?'Identidad verificada':'Recibida';
+  if(dc==='Rechazar: identidad no verificada'){r.status='Cerrada';r.closedAt=todayISO()}
+  save();if(!silent){toast('Avance guardado');render()}}
+};
+function newPart(pid,progId,cohId,start,dur){return {id:uid('pt'),pid,programId:progId,cohortId:cohId,start,end:addDays(start,dur),
+ diag:{initial:{version:S.privCurrent,status:'no_iniciado',answers:{},startedAt:null,sentAt:null,scores:null,obs:'',validatedAt:null,corrections:[],correction:null},final:{enabled:false,status:'no_iniciado',answers:{},version:S.privCurrent,scores:null}},
+ routeApproved:false,stages:{C:false,O:false,D:false,E:false},assignments:[],notices:[],history:[{date:nowTs(),change:'Participación creada',before:'—',after:prog(progId).name,author:'Tiby Hernández'}],notes:''}}
+
+/* ============================== EVENTOS ============================== */
+document.addEventListener('click',e=>{
+ const g=e.target.closest('[data-go]');if(g&&!g.disabled){e.preventDefault();go(g.dataset.go,{...g.dataset});return}
+ const a=e.target.closest('[data-act]');if(a&&!a.disabled){if(!(a.tagName==='A'&&a.dataset.keep==='1'))e.preventDefault();const fn=ACT[a.dataset.act];fn&&fn(a,e)}
+});
+document.addEventListener('submit',e=>{e.preventDefault();const f=e.target;const fn=FORMS[f.dataset.form];if(fn){UI.err='';fn(f,e)}});
+let autoT;
+document.addEventListener('input',e=>{const el=e.target;
+ if(el.dataset.bind==='act'){const pt=curPart();const a=pt.assignments.find(x=>x.id===el.dataset.aid);if(!canEdit(pt,a))return;ensureDraft(a);a.draft.answers[+el.dataset.f]=el.value;
+  const s=document.getElementById('savestate');if(s)s.textContent='Guardando…';clearTimeout(autoT);autoT=setTimeout(()=>{a.draft.savedAt=nowTs();save();flashSave()},600)}
+ if(el.dataset.bind==='diag'){const pt=curPart();const dg=pt.diag[el.dataset.kind];dg.answers[el.dataset.q]=el.value;if(dg.status==='no_iniciado'){dg.status='en_progreso';dg.startedAt=nowTs()}
+  const c=document.getElementById('cnt-'+el.dataset.q);if(c)c.textContent=el.value.length+'/500';const s=document.getElementById('savestate');if(s)s.textContent='Guardando…';clearTimeout(autoT);autoT=setTimeout(()=>{save();flashSave()},600)}
+});
+document.addEventListener('change',e=>{const el=e.target;const k=el.dataset.change;if(!k)return;
+ if(k==='part'){UI.partId=el.value;saveUI();go(UI.view==='p-activity'?'p-home':UI.view,UI.view==='p-portfolio'?UI.params:{})}
+ if(k==='statsV'){go('a-stats',{v:el.value})}
+ if(k==='mand'){const pt=part(el.dataset.id),a=pt.assignments.find(x=>x.id===el.dataset.aid);const m=el.value==='1';if(m===a.mandatory)return;a.mandatory=m;logChange(pt,'Clasificación · '+a.name,m?'Complementaria':'Obligatoria',m?'Obligatoria':'Complementaria',pt.routeApproved?`«${a.name}» ahora es ${m?'obligatoria':'complementaria'}.`:null);save();render()}
+ if(k==='due'){const pt=part(el.dataset.id),a=pt.assignments.find(x=>x.id===el.dataset.aid);const before=a.due;a.due=el.value||null;logChange(pt,'Fecha de entrega · '+a.name,fd(before),fd(a.due),pt.routeApproved?`La fecha de entrega de «${a.name}» ${a.due?'es ahora el '+fd(a.due):'se retiró'}.`:null);save();render()}
+});
+
+/* ============================== RENDER ============================== */
+function renderDemo(){const r=UI.role;document.getElementById('demo').innerHTML=`<div class="demobar"><div class="wrap"><b>DEMO</b><span>Ver como:</span>
+ <button class="${r==='public'?'on':''}" data-act="demoRole" data-r="public">Visitante</button><button class="${r==='participant'?'on':''}" data-act="demoRole" data-r="participant">María · participante</button><button class="${r==='admin'?'on':''}" data-act="demoRole" data-r="admin">Tiby · mentora</button><span class="sp"></span><button data-act="demoReset">${UI.confirmReset?'¿Seguro? Toca otra vez':'Reiniciar demo'}</button></div></div>`}
+function render(){
+ renderDemo();let v=UI.view;const app=document.getElementById('app');
+ if(v.startsWith('p-')){const u=me();if(UI.role!=='participant'||!u||u.status!=='activo'){UI.role='public';UI.uid=null;UI.view=v='login'}}
+ if(v.startsWith('a-')&&UI.role!=='admin'){UI.view=v='login'}
+ const fn=V[v]||V.home;
+ if(v.startsWith('p-')){if(!curPart()){app.innerHTML=empty('No tienes mentorías asignadas');return}app.innerHTML=pShell(fn())}
+ else if(v.startsWith('a-'))app.innerHTML=aShell(fn());
+ else app.innerHTML=fn();
+ document.title='Mi Expansión';
+}
+render();
+</script>
+
+</body>
+</html>
